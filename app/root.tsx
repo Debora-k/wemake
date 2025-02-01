@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 
+import { Navigation } from "./common/components/navigation";
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
 
@@ -43,7 +44,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <>
+      <Navigation />
+      <Outlet />
+    </>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
