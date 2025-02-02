@@ -146,9 +146,8 @@ export function Navigation() {
                             key={item.name}
                             className={cn(
                               "select-none rounded-md transition-colors hover:bg-accent focus:bg-accent",
-                              item.to === "/products/promote" &&
-                                "col-span-2 bg-primary/10 hover:bg-primary/20 focus:bg-primary/20",
-                              item.to === "/jobs/submit" &&
+                              (item.to === "/products/promote" ||
+                                item.to === "/jobs/submit") &&
                                 "col-span-2 bg-primary/10 hover:bg-primary/20 focus:bg-primary/20"
                             )}
                           >
