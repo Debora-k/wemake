@@ -32,7 +32,8 @@ UI and Styling
 
 Key Conventions
 
-- Don't import anything from Radix UI. Always import UI componentsfrom Shadcn UI.
+- Don't import automatically anything from Radix UI.
+- Don't import anything from Radix UI. Always import UI components from Shadcn UI.
 - Don't import anything from Remix. Any @remix-run import should be imported from "react-router".
 - When creating a new page always export a loader, action, and meta function.
 - Route types should be imported like this: `import type { Route } from "./+types/...";`
