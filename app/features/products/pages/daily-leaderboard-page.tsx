@@ -1,31 +1,73 @@
 import type { Route } from "./+types/daily-leaderboard-page";
-import type { MetaFunction } from "react-router";
+import { DateTime } from "luxon";
+import { data, isRouteErrorResponse } from "react-router";
+import { z } from "zod";
 
-export function meta({ params }: Route.MetaArgs): ReturnType<MetaFunction> {
-  return [
-    { title: "Daily Leaderboard | Product Hunt Clone" },
-    { name: "description", content: "Top products of the day" },
-  ];
-}
+const paramsSchema = z.object({
+  year: z.coerce.number(),
+  month: z.coerce.number(),
+  day: z.coerce.number(),
+});
 
-export function loader({ request, params }: Route.LoaderArgs) {
-  const { year, month, day } = params;
+export const loader = ({ params }: Route.LoaderArgs) => {
+  const { success, data: parsedData } = paramsSchema.safeParse(params);
+  if (!success) {
+    throw data(
+      {
+        error_code: "INVALID_PARAMS",
+        error_message: "Invalid params",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+  const date = DateTime.fromObject(parsedData).setZone("Canada/Mountain");
+
+  if (!date.isValid) {
+    throw data(
+      {
+        error_code: "INVALID_DATE",
+        error_message: "Invalid date",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
+  const today = DateTime.now().setZone("Canada/Mountain").startOf("day");
+  if (date > today) {
+    throw data(
+      {
+        error_code: "FUTURE_DATE",
+        error_message: "Future date",
+      },
+      {
+        status: 400,
+      }
+    );
+  }
   return {
-    year,
-    month,
-    day,
-    products: [],
+    date,
   };
-}
+};
 
 export default function DailyLeaderboardPage({
   loaderData,
-  actionData,
 }: Route.ComponentProps) {
-  return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">Top Products of</h1>
-      {/* Daily leaderboard content will go here */}
-    </div>
-  );
+  return <div></div>;
+}
+
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+        {error.data.message} / {error.data.error_code}
+      </div>
+    );
+  }
+  if (error instanceof Error) {
+    return <div>{error.message}</div>;
+  }
+  return <div>Unknown error</div>;
 }
