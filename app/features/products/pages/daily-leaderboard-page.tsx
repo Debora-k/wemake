@@ -13,6 +13,24 @@ const paramsSchema = z.object({
   day: z.coerce.number(),
 });
 
+export const meta: Route.MetaFunction = ({ params }) => {
+  const { success, data: parsedData } = paramsSchema.safeParse(params);
+  let title = "Daily Leaderboard";
+  if (success) {
+    const date = DateTime.fromObject(parsedData)
+      .setZone("Canada/Mountain")
+      .setLocale("en-CA");
+    title = `Best products of ${date.toLocaleString(
+      DateTime.DATE_MED
+    )} | wemake`;
+  }
+  return [
+    {
+      title,
+    },
+  ];
+};
+
 export const loader = ({ params }: Route.LoaderArgs) => {
   const { success, data: parsedData } = paramsSchema.safeParse(params);
   if (!success) {

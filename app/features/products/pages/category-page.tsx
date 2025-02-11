@@ -1,28 +1,37 @@
 import type { Route } from "./+types/category-page";
-import type { MetaFunction } from "react-router";
+import { Hero } from "~/common/components/hero";
+import { ProductCard } from "../components/product-card";
+import { ProductPagination } from "~/common/components/product-pagination";
 
-export function meta({ params }: Route.MetaArgs): ReturnType<MetaFunction> {
+export const meta = ({ params }: Route.MetaArgs) => {
   return [
-    { title: "Category | Product Hunt Clone" },
-    { name: "description", content: "Products in this category" },
+    { title: `Developer Tools | Product Hunt Clone` },
+    { name: "description", content: "Browse products by category" },
   ];
-}
+};
 
-export function loader({ request, params }: Route.LoaderArgs) {
-  const { category } = params;
-  return {
-    category,
-    products: [],
-  };
-}
-
-export default function CategoryPage({
-  loaderData,
-  actionData,
-}: Route.ComponentProps) {
+export default function CategoryPage() {
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6"></h1>
+    <div className="space-y-10">
+      <Hero
+        title="Developer Tools"
+        subtitle={`Tools for developers to build products faster!`}
+        className="text-lg"
+      />
+      <div className="space-y-5 w-full max-w-screen-md mx-auto">
+        {Array.from({ length: 11 }).map((_, index) => (
+          <ProductCard
+            key={index}
+            id={`productId-${index}`}
+            name="Product Name"
+            description="Product Description"
+            commentsCount={12}
+            viewsCount={12}
+            votesCount={120}
+          />
+        ))}
+      </div>
+      <ProductPagination totalPages={10} />
     </div>
   );
 }

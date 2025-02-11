@@ -20,7 +20,3 @@ export function loader({ params, request }: Route.LoaderArgs) {
   }
   return redirect(url);
 }
-
-export default function LeaderboardsRedirectionPage() {
-  return <div>Redirecting...</div>;
-}

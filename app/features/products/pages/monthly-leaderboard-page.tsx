@@ -11,6 +11,21 @@ const paramsSchema = z.object({
   year: z.coerce.number(),
   month: z.coerce.number(),
 });
+export const meta: Route.MetaFunction = ({ params }) => {
+  const { success, data: parsedData } = paramsSchema.safeParse(params);
+  let title = "Monthly Leaderboard";
+  if (success) {
+    const date = DateTime.fromObject(parsedData)
+      .setZone("Canada/Mountain")
+      .setLocale("en-CA");
+    title = `Best of ${date.toLocaleString({ month: "long" })} | wemake`;
+  }
+  return [
+    {
+      title,
+    },
+  ];
+};
 
 export const loader = ({ params }: Route.LoaderArgs) => {
   const { success, data: parsedData } = paramsSchema.safeParse(params);
