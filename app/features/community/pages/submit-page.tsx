@@ -2,6 +2,7 @@ import { Hero } from "~/common/components/hero";
 import { Form } from "react-router";
 import InputPair from "~/common/components/input-pair";
 import SelectPair from "~/common/components/select-pair";
+import { Button } from "~/common/components/ui/button";
 
 export default function SubmitPostPage() {
   return (
@@ -10,7 +11,7 @@ export default function SubmitPostPage() {
         title="Create Discussion"
         subtitle="Share your thoughts and ideas with the community"
       />
-      <Form>
+      <Form className="flex flex-col gap-10 max-w-screen-md mx-auto">
         <InputPair
           label="Title"
           name="title"
@@ -31,6 +32,15 @@ export default function SubmitPostPage() {
             { label: "Svelte", value: "svelte" },
           ]}
         />
+        <InputPair
+          label="Content"
+          name="content"
+          id="content"
+          textArea
+          description="1000 characters max"
+          placeholder="i.e. I'm having trouble understanding the concept of..."
+        />
+        <Button className="mx-auto">Create Discussion</Button>
       </Form>
     </div>
   );
