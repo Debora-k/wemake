@@ -55,6 +55,14 @@ export default function SettingsPage() {
               required
               textArea
             />
+            <InputPair
+              label="Headline"
+              description="An introduction to your profile."
+              name="headline"
+              id="headline"
+              required
+              textArea
+            />
             <Button className="w-full">Update Profile</Button>
           </Form>
         </div>

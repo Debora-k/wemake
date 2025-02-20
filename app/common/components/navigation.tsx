@@ -234,7 +234,7 @@ export default function Navigation({
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
               <DropdownMenuLabel className="flex flex-col">
-                <span className="font-medium">John Doe</span>
+                <span className="font-medium">Debora</span>
                 <span className="text-xs text-muted-foreground">@username</span>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
