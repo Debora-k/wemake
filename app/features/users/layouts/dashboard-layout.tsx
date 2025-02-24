@@ -59,7 +59,7 @@ export default function DashboardLayout() {
           </SidebarGroup>
         </SidebarContent>
       </Sidebar>
-      <div className="h-full overflow-y-scroll">
+      <div className="h-full w-full overflow-y-scroll">
         <Outlet />
       </div>
     </SidebarProvider>
