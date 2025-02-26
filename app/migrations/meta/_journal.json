@@ -15,6 +15,13 @@
       "when": 1740534057038,
       "tag": "0001_complete_mongoose",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1740607839006,
+      "tag": "0002_wise_madame_web",
+      "breakpoints": true
     }
   ]
 }
