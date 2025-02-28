@@ -43,6 +43,27 @@
       "when": 1740615443355,
       "tag": "0005_friendly_mathemanic",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1740630394975,
+      "tag": "0006_purple_nextwave",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1740698565959,
+      "tag": "0007_complete_lenny_balinger",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1740700775448,
+      "tag": "0008_clear_darwin",
+      "breakpoints": true
     }
   ]
 }
