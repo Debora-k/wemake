@@ -14,8 +14,6 @@ import { Form } from "react-router";
 import { Textarea } from "~/common/components/ui/textarea";
 import { Button } from "~/common/components/ui/button";
 import { SendIcon } from "lucide-react";
-import { MessageBubble } from "~/features/users/components/message-bubble";
-
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Message | wemake" }];
 };
