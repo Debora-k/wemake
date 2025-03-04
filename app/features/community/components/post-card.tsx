@@ -21,7 +21,7 @@ interface PostCardProps {
   author: string;
   authorAvatar: string | null;
   category: string;
-  createdAt: Date;
+  createdAt: string;
   expended?: boolean;
   votesCount?: number;
 }
@@ -56,7 +56,7 @@ export function PostCard({
                 {author} on {category}
               </span>
               <DotIcon className="w-4 h-4" />
-              <span>{DateTime.fromJSDate(createdAt).toRelative()}</span>
+              <span>{DateTime.fromISO(createdAt).toRelative()}</span>
             </div>
           </div>
         </CardHeader>
