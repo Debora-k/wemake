@@ -19,12 +19,8 @@ export const meta: Route.MetaFunction = () => {
   return [{ title: "Community | wemake" }];
 };
 
-export const loader = async () => {
-  // const topics = await getTopics();
-  // const posts = await getPosts();
-  // const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
-  const topics = await getTopics();
-  const posts = getPosts();
+export const clientLoader = async () => {
+  const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
   return { topics, posts };
 };
 
@@ -145,4 +141,8 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
       </div>
     </div>
   );
+}
+
+export function HydrateFallback() {
+  return <div>Loading...</div>;
 }

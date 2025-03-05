@@ -6,6 +6,9 @@ import { PostCard } from "~/features/community/components/post-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { JobCard } from "~/features/jobs/components/job-card";
 import { TeamCard } from "~/features/teams/components/team-card";
+import { getProductsByDateRange } from "~/features/products/queries";
+import { DateTime } from "luxon";
+
 export function meta({ params }: Route.MetaArgs) {
   return [
     { title: "Home | Product Hunt Clone" },
@@ -13,7 +16,16 @@ export function meta({ params }: Route.MetaArgs) {
   ];
 }
 
-export default function HomePage() {
+export const loader = async () => {
+  const products = await getProductsByDateRange({
+    startDate: DateTime.now().startOf("day"),
+    endDate: DateTime.now().endOf("day"),
+    limit: 7,
+  });
+  return { products };
+};
+
+export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="px-20 space-y-40">
       <div className="grid grid-cols-3 gap-4">
@@ -28,15 +40,15 @@ export default function HomePage() {
             <Link to="/products/leaderboards">Explore Leaderboard &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
+        {loaderData.products.map((product, index) => (
           <ProductCard
-            key={index}
-            id={`productId-${index}`}
-            name="Product Name"
-            description="Product Description"
-            commentsCount={12}
-            viewsCount={12}
-            votesCount={120}
+            key={product.product_id}
+            id={product.product_id.toString()}
+            name={product.name}
+            description={product.description}
+            reviewsCount={product.reviews}
+            viewsCount={product.views}
+            votesCount={product.upvotes}
           />
         ))}
       </div>
