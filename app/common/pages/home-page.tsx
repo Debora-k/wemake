@@ -8,6 +8,7 @@ import { JobCard } from "~/features/jobs/components/job-card";
 import { TeamCard } from "~/features/teams/components/team-card";
 import { getProductsByDateRange } from "~/features/products/queries";
 import { DateTime } from "luxon";
+import { getPosts } from "~/features/community/queries";
 
 export function meta({ params }: Route.MetaArgs) {
   return [
@@ -22,7 +23,11 @@ export const loader = async () => {
     endDate: DateTime.now().endOf("day"),
     limit: 7,
   });
-  return { products };
+  const posts = await getPosts({
+    limit: 7,
+    sorting: "newest",
+  });
+  return { products, posts };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -64,14 +69,16 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/community">Explore all discussions &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
+        {loaderData.posts.map((post) => (
           <PostCard
-            id={index}
-            title="What is the best productivity tool?"
-            author="Debora"
-            authorAvatar="https://github.com/apple.png"
-            category="Productivity"
-            createdAt="12 hours ago"
+            key={post.post_id}
+            id={post.post_id}
+            title={post.title}
+            author={post.author}
+            authorAvatar={post.author_avatar}
+            category={post.topic}
+            createdAt={post.created_at}
+            votesCount={post.upvotes}
           />
         ))}
       </div>
@@ -89,6 +96,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         </div>
         {Array.from({ length: 5 }).map((_, index) => (
           <IdeaCard
+            key={index}
             id="ideaId"
             title="A startup that creates an AI-powered generated personal trainer, delivering customized fitness recommendations and tracking of progress using a mobile app to track workouts and progress as well as a website to manage for user's advanced experience."
             description="Find ideas for your next project."
@@ -113,6 +121,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         </div>
         {Array.from({ length: 11 }).map((_, index) => (
           <JobCard
+            key={index}
             id="jobId"
             company="Meta"
             companyLogoUrl="https://github.com/facebook.png"
@@ -141,6 +150,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         </div>
         {Array.from({ length: 7 }).map((_, index) => (
           <TeamCard
+            key={index}
             id="teamId"
             leaderUserName="Deb"
             leaderAvatar="https://github.com/debora-k.png"
