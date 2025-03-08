@@ -5,7 +5,7 @@ import { PAGE_SIZE } from "./constants";
 const productListSelect = `
     product_id,
     name,
-    description,
+    tagline,
     upvotes:stats->>upvotes,
     views:stats->>views,
     reviews:stats->>reviews
@@ -89,3 +89,23 @@ export const getCategoryPages = async (categoryId: number) => {
     if (!count) return 1;
     return Math.ceil(count / PAGE_SIZE);
 }
+
+export const getProductsBySearch = async ({query, page}: {query: string, page: number}) => {
+    const {data, error} = await client
+        .from("products")
+        .select(productListSelect)
+        .or(`name.ilike.%${query}%, tagline.ilike.%${query}%`)
+        .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
+    if(error) throw new Error(error.message);
+    return data;
+};
+
+export const getPagesBySearch = async ({query}: {query: string}) => {
+    const {count, error} = await client
+        .from("products")
+        .select(`product_id`, {count: "exact", head: true})
+        .or(`name.ilike.%${query}%, tagline.ilike.%${query}%`);
+    if(error) throw new Error(error.message);
+    if (!count) return 1;
+    return Math.ceil(count / PAGE_SIZE);
+};
