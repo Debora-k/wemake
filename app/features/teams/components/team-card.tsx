@@ -14,9 +14,9 @@ import {
 } from "~/common/components/ui/avatar";
 
 interface TeamCardProps {
-  id: string;
+  id: number;
   leaderUserName: string;
-  leaderAvatar: string;
+  leaderAvatar: string | null;
   positions: string[];
   project: string;
 }
@@ -29,8 +29,8 @@ export function TeamCard({
   project,
 }: TeamCardProps) {
   return (
-    <Link to={`/teams/${id}`}>
-      <Card className="bg-transparent transition-colors hover:bg-card/50">
+    <Link to={`/teams/${id}`} className="block">
+      <Card className="bg-transparent transition-colors flex flex-col justify-between hover:bg-card/50 h-full">
         <CardHeader className="flex flex-row items-center">
           <CardTitle className="text-base leading-loose">
             <Badge
@@ -40,7 +40,7 @@ export function TeamCard({
               <span>@{leaderUserName}</span>
               <Avatar className="size-5">
                 <AvatarFallback>{leaderUserName[0]}</AvatarFallback>
-                {leaderAvatar && <AvatarImage src={leaderAvatar} />}
+                {leaderAvatar ? <AvatarImage src={leaderAvatar} /> : null}
               </Avatar>
             </Badge>
             <span> is looking for </span>

@@ -10,6 +10,8 @@ import { getProductsByDateRange } from "~/features/products/queries";
 import { DateTime } from "luxon";
 import { getPosts } from "~/features/community/queries";
 import { getGptIdeas } from "~/features/ideas/queries";
+import { getJobs } from "~/features/jobs/queries";
+import { getTeams } from "~/features/teams/queries";
 
 export function meta({ params }: Route.MetaArgs) {
   return [
@@ -31,7 +33,13 @@ export const loader = async () => {
   const ideas = await getGptIdeas({
     limit: 5,
   });
-  return { products, posts, ideas };
+  const jobs = await getJobs({
+    limit: 11,
+  });
+  const teams = await getTeams({
+    limit: 7,
+  });
+  return { products, posts, ideas, jobs, teams };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -122,18 +130,18 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/jobs">Explore all jobs &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
+        {loaderData.jobs.map((job) => (
           <JobCard
-            key={index}
-            id="jobId"
-            company="Meta"
-            companyLogoUrl="https://github.com/facebook.png"
-            companyHq="Calgary, AB"
-            title="Software Engineer"
-            type="Full-time"
-            position="Remote"
-            salary="$100,000 - $120,000"
-            createdAt="8 hours ago"
+            key={job.job_id}
+            id={job.job_id}
+            company={job.company_name}
+            companyLogoUrl={job.company_logo}
+            companyHq={job.company_location}
+            title={job.position}
+            type={job.job_type}
+            position={job.location}
+            salary={job.salary_range}
+            createdAt={job.created_at}
           />
         ))}
       </div>
@@ -151,18 +159,14 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             </Link>
           </Button>
         </div>
-        {Array.from({ length: 7 }).map((_, index) => (
+        {loaderData.teams.map((team) => (
           <TeamCard
-            key={index}
-            id="teamId"
-            leaderUserName="Deb"
-            leaderAvatar="https://github.com/debora-k.png"
-            positions={[
-              "React Developer",
-              "Backend Developer",
-              "Product Manager",
-            ]}
-            project="a new social media platform"
+            key={team.team_id}
+            id={team.team_id}
+            leaderUserName={team.team_leader.username}
+            leaderAvatar={team.team_leader.avatar}
+            positions={team.roles.split(",")}
+            project={team.product_description}
           />
         ))}
       </div>
