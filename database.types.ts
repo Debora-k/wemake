@@ -332,6 +332,13 @@ export type Database = {
             foreignKeyName: "notifications_product_id_products_product_id_fk"
             columns: ["product_id"]
             isOneToOne: false
+            referencedRelation: "product_overview_view"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "notifications_product_id_products_product_id_fk"
+            columns: ["product_id"]
+            isOneToOne: false
             referencedRelation: "products"
             referencedColumns: ["product_id"]
           },
@@ -513,6 +520,13 @@ export type Database = {
             foreignKeyName: "product_upvotes_product_id_products_product_id_fk"
             columns: ["product_id"]
             isOneToOne: false
+            referencedRelation: "product_overview_view"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "product_upvotes_product_id_products_product_id_fk"
+            columns: ["product_id"]
+            isOneToOne: false
             referencedRelation: "products"
             referencedColumns: ["product_id"]
           },
@@ -660,6 +674,13 @@ export type Database = {
             foreignKeyName: "reviews_product_id_products_product_id_fk"
             columns: ["product_id"]
             isOneToOne: false
+            referencedRelation: "product_overview_view"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "reviews_product_id_products_product_id_fk"
+            columns: ["product_id"]
+            isOneToOne: false
             referencedRelation: "products"
             referencedColumns: ["product_id"]
           },
@@ -764,6 +785,22 @@ export type Database = {
           idea: string | null
           likes: number | null
           views: number | null
+        }
+        Relationships: []
+      }
+      product_overview_view: {
+        Row: {
+          average_rating: number | null
+          description: string | null
+          how_it_works: string | null
+          icon: string | null
+          name: string | null
+          product_id: number | null
+          reviews: string | null
+          tagline: string | null
+          upvotes: string | null
+          url: string | null
+          views: string | null
         }
         Relationships: []
       }
