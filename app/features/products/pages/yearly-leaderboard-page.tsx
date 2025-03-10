@@ -118,7 +118,7 @@ export default function YearlyLeaderboardPage({
         {loaderData.yearlyProducts.map((product) => (
           <ProductCard
             key={product.product_id}
-            id={product.product_id.toString()}
+            id={product.product_id}
             name={product.name}
             description={product.tagline}
             reviewsCount={product.reviews}

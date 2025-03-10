@@ -30,3 +30,15 @@ export const getJobs = async ({limit, location, type, salary}: {limit: number, l
     }
     return data;
 };
+
+export const getJobById = async (jobId: string) => {
+    const {data, error} = await client
+        .from("jobs")
+        .select("*")
+        .eq("job_id", jobId)
+        .single();
+    if(error) {
+        throw new Error(error.message);
+    }
+    return data;
+};
