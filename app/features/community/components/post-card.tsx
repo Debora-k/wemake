@@ -11,7 +11,7 @@ import {
   AvatarImage,
 } from "~/common/components/ui/avatar";
 import { Button } from "~/common/components/ui/button";
-import { ChevronUpIcon, DotIcon } from "lucide-react";
+import { ChevronUpIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { DateTime } from "luxon";
 
@@ -55,7 +55,6 @@ export function PostCard({
               <span>
                 {author} on {category}
               </span>
-              <DotIcon className="w-4 h-4" />
               <span>{DateTime.fromISO(createdAt).toRelative()}</span>
             </div>
           </div>

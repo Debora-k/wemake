@@ -1,0 +1,1 @@
+ALTER TABLE "post_replies" ALTER COLUMN "post_reply_id" SET GENERATED ALWAYS;

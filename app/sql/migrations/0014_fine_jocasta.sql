@@ -1,0 +1,1 @@
+ALTER TABLE "post_replies" ALTER COLUMN "profile_id" SET NOT NULL;

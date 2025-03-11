@@ -17,7 +17,7 @@ import {
   AvatarImage,
 } from "~/common/components/ui/avatar";
 import { Reply } from "../components/reply";
-import { getPostById } from "../queries";
+import { getPostById, getReplies } from "../queries";
 import { DateTime } from "luxon";
 
 export const meta: Route.MetaFunction = ({ params }) => {
@@ -26,7 +26,8 @@ export const meta: Route.MetaFunction = ({ params }) => {
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const post = await getPostById(params.postId);
-  return { post };
+  const replies = await getReplies(params.postId);
+  return { post, replies };
 };
 
 export default function PostPage({ loaderData }: Route.ComponentProps) {
@@ -65,7 +66,7 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
               <ChevronUpIcon className="size-4 shrink-0" />
               <span>{loaderData.post.upvotes}</span>
             </Button>
-            <div className="space-y-20">
+            <div className="space-y-20 w-full">
               <div className="space-y-2">
                 <h2 className="text-2xl font-bold">{loaderData.post.title}</h2>
                 <div className="flex items-center gap-0 text-sm text-muted-foreground">
@@ -99,13 +100,17 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
                 <h4 className="font-semibold">
                   {loaderData.post.replies_count} Replies
                 </h4>
-                <Reply
-                  content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,"
-                  username="Debora"
-                  avatarUrl="https://github.com/debora-k.png"
-                  timestamp="10 hours ago"
-                  topLevel
-                />
+                {loaderData.replies.map((reply) => (
+                  <Reply
+                    key={reply.post_reply_id}
+                    content={reply.reply}
+                    username={reply.user?.name ?? ""}
+                    avatarUrl={reply.user?.avatar ?? null}
+                    timestamp={reply.created_at}
+                    topLevel={true}
+                    replies={reply.post_replies}
+                  />
+                ))}
               </div>
             </div>
           </div>

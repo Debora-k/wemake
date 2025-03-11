@@ -15,7 +15,7 @@ export const roles = pgEnum("role", [
 ]);
 
 export const profiles = pgTable("profiles", {
-    profile_id: uuid().primaryKey().references(() => users.id, { onDelete: "cascade" }),
+    profile_id: uuid().primaryKey().references(() => users.id, { onDelete: "cascade" }).notNull(),
     avatar: text(),
     name: text().notNull(),
     username: text().notNull(),

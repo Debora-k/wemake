@@ -17,18 +17,32 @@ import { Badge } from "~/common/components/ui/badge";
 import { Textarea } from "~/common/components/ui/textarea";
 import { cn } from "~/lib/utils";
 import { buttonVariants } from "~/common/components/ui/button";
+import type { Route } from "./+types/profile-layout";
+import { getUserProfile } from "../queries";
 
-export default function ProfileLayout() {
+export const loader = async ({
+  params,
+}: Route.LoaderArgs & { params: { username: string } }) => {
+  const user = await getUserProfile(params.username);
+  return { user };
+};
+
+export default function ProfileLayout({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-10">
       <div className="flex items-center gap-4">
         <Avatar className="size-40">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>N</AvatarFallback>
+          {loaderData.user.avatar ? (
+            <AvatarImage src={loaderData.user.avatar} />
+          ) : (
+            <AvatarFallback className="text-2xl">
+              {loaderData.user.name[0]}
+            </AvatarFallback>
+          )}
         </Avatar>
         <div className="space-y-3">
           <div className="flex gap-2">
-            <h1 className="text-2xl font-semibold">Debora Kwon</h1>
+            <h1 className="text-2xl font-semibold">{loaderData.user.name}</h1>
             <Button variant="outline" asChild>
               <Link to="/my/settings">Edit Profile</Link>
             </Button>
@@ -58,8 +72,10 @@ export default function ProfileLayout() {
             </Dialog>
           </div>
           <div className="flex gap-2 items-center">
-            <span className="text-sm text-muted-foreground">@debora-k</span>
-            <Badge variant="secondary">Full Stack Developer</Badge>
+            <span className="text-sm text-muted-foreground">
+              @{loaderData.user.username}
+            </span>
+            <Badge variant="secondary">{loaderData.user.role}</Badge>
             <Badge variant="secondary">123 followers</Badge>
             <Badge variant="secondary">123 following</Badge>
           </div>
@@ -67,9 +83,12 @@ export default function ProfileLayout() {
       </div>
       <div className="flex gap-5">
         {[
-          { label: "About", to: "/users/username" },
-          { label: "Products", to: "/users/username/products" },
-          { label: "Posts", to: "/users/username/posts" },
+          { label: "About", to: `/users/${loaderData.user.username}` },
+          {
+            label: "Products",
+            to: `/users/${loaderData.user.username}/products`,
+          },
+          { label: "Posts", to: `/users/${loaderData.user.username}/posts` },
         ].map((item) => (
           <NavLink
             end
@@ -87,7 +106,12 @@ export default function ProfileLayout() {
         ))}
       </div>
       <div className="max-w-screen-md">
-        <Outlet />
+        <Outlet
+          context={{
+            headline: loaderData.user.headline,
+            bio: loaderData.user.bio,
+          }}
+        />
       </div>
     </div>
   );
