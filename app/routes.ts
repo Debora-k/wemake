@@ -29,6 +29,7 @@ layout("features/products/layouts/leaderboard-layout.tsx", [
                 index("features/products/pages/product-reviews-page.tsx"),
             ]),
             ]),
+            route("/visit", "features/products/pages/product-visit-page.tsx"),
         ]),
     ]),
     ...prefix("/ideas", [

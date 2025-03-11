@@ -33,6 +33,27 @@ export type Database = {
         }
         Relationships: []
       }
+      events: {
+        Row: {
+          created_at: string | null
+          event_data: Json | null
+          event_id: string
+          event_type: Database["public"]["Enums"]["event_type"] | null
+        }
+        Insert: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_id?: string
+          event_type?: Database["public"]["Enums"]["event_type"] | null
+        }
+        Update: {
+          created_at?: string | null
+          event_data?: Json | null
+          event_id?: string
+          event_type?: Database["public"]["Enums"]["event_type"] | null
+        }
+        Relationships: []
+      }
       follows: {
         Row: {
           created_at: string
@@ -371,7 +392,7 @@ export type Database = {
           parent_id: number | null
           post_id: number | null
           post_reply_id: number
-          profile_id: string | null
+          profile_id: string
           reply: string
           updated_at: string
         }
@@ -379,8 +400,8 @@ export type Database = {
           created_at?: string
           parent_id?: number | null
           post_id?: number | null
-          post_reply_id?: number
-          profile_id?: string | null
+          post_reply_id?: never
+          profile_id: string
           reply: string
           updated_at?: string
         }
@@ -388,8 +409,8 @@ export type Database = {
           created_at?: string
           parent_id?: number | null
           post_id?: number | null
-          post_reply_id?: number
-          profile_id?: string | null
+          post_reply_id?: never
+          profile_id?: string
           reply?: string
           updated_at?: string
         }
@@ -619,7 +640,7 @@ export type Database = {
             referencedColumns: ["category_id"]
           },
           {
-            foreignKeyName: "products_profile_id_profiles_profile_id_fk"
+            foreignKeyName: "products_to_profiles_fk"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -853,9 +874,16 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      track_event: {
+        Args: {
+          event_type: Database["public"]["Enums"]["event_type"]
+          event_data: Json
+        }
+        Returns: undefined
+      }
     }
     Enums: {
+      event_type: "product_view" | "product_visit" | "profile_view"
       job_type: "full-time" | "part-time" | "remote"
       location: "remote" | "on-site" | "hybrid"
       notification_type: "follow" | "review" | "reply" | "mention"
