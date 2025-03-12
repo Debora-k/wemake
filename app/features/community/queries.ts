@@ -86,7 +86,7 @@ export const getPostById = async (client: SupabaseClient<Database>, {postId}: {p
     const {data, error} = await client
     .from("community_post_detail")
     .select("*")
-    .eq("post_id", postId)
+    .eq("post_id", postId as unknown as number)
     .single();
     if(error) throw new Error(error.message);
     return data;
