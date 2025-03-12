@@ -54,6 +54,7 @@ layout("features/products/layouts/leaderboard-layout.tsx", [
                 route("/complete", "features/auth/pages/social-page.tsx"),
             ]),
         ]),
+        route("/logout", "features/auth/pages/logout-page.tsx"),
     ]),
     ...prefix("/community", [
         index("features/community/pages/community-page.tsx"),
