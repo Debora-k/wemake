@@ -19,11 +19,14 @@ import { cn } from "~/lib/utils";
 import { buttonVariants } from "~/common/components/ui/button";
 import type { Route } from "./+types/profile-layout";
 import { getUserProfile } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 export const loader = async ({
   params,
+  request,
 }: Route.LoaderArgs & { params: { username: string } }) => {
-  const user = await getUserProfile(params.username);
+  const { client, headers } = makeSSRClient(request);
+  const user = await getUserProfile(client, params.username);
   return { user };
 };
 

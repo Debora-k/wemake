@@ -42,7 +42,7 @@ export const product_upvotes = pgTable("product_upvotes", {
 export const reviews = pgTable("reviews", {
     review_id: bigint({mode:"number"}).primaryKey().generatedByDefaultAsIdentity(),
     product_id: bigint({mode:"number"}).references(() => products.product_id, { onDelete: "cascade" }),
-    profile_id: uuid().references(() => profiles.profile_id, { onDelete: "cascade" }),
+    profile_id: uuid().references(() => profiles.profile_id, { onDelete: "cascade" }).notNull(),
     rating: integer().notNull(),
     review: text().notNull(),
     created_at: timestamp().notNull().defaultNow(),

@@ -15,6 +15,7 @@ import { Input } from "~/common/components/ui/input";
 import { PostCard } from "../components/post-card";
 import { getPosts, getTopics } from "../queries";
 import { z } from "zod";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Community | wemake" }];
@@ -30,6 +31,7 @@ const searchParamsSchema = z.object({
   topic: z.string().optional(),
 });
 export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client, headers } = makeSSRClient(request);
   const url = new URL(request.url);
   const searchParams = searchParamsSchema.safeParse(
     Object.fromEntries(url.searchParams)
@@ -38,8 +40,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
     throw new Response("Invalid search params", { status: 400 });
   }
   const [topics, posts] = await Promise.all([
-    getTopics(),
-    getPosts({
+    getTopics(client),
+    getPosts(client, {
       limit: 20,
       sorting: searchParams.data.sorting,
       period: searchParams.data.period,

@@ -1,5 +1,4 @@
-import type { Route } from "./+types/submit-page";
-import type { MetaFunction } from "react-router";
+import type { Route } from "./+types/submit-product-page";
 import { Hero } from "~/common/components/hero";
 import { Form } from "react-router";
 import InputPair from "~/common/components/input-pair";

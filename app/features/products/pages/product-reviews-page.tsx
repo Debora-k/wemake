@@ -5,6 +5,7 @@ import CreateReviewDialog from "../components/create-review-dialog";
 import { useOutletContext } from "react-router";
 import type { Route } from "./+types/product-reviews-page";
 import { getReviews } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 export function meta() {
   return [
     { title: "Product Reviews | wemake" },
@@ -12,8 +13,9 @@ export function meta() {
   ];
 }
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const reviews = await getReviews(params.productId);
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { client, headers } = makeSSRClient(request);
+  const reviews = await getReviews(client, params.productId);
   return { reviews };
 };
 

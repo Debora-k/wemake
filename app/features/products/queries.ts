@@ -1,6 +1,7 @@
 import type { DateTime } from "luxon";
-import client from "~/supa-client"
 import { PAGE_SIZE } from "./constants";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "~/supa-client";
 
 export const productListSelect = `
     product_id,
@@ -11,7 +12,7 @@ export const productListSelect = `
     reviews:stats->>reviews
     `;
 
-export const getProductsByDateRange = async ({
+export const getProductsByDateRange = async (client: SupabaseClient<Database>,{
     startDate,
     endDate,
     limit,
@@ -35,7 +36,7 @@ export const getProductsByDateRange = async ({
 
 };
 
-export const getProductPagesByDateRange = async ({
+export const getProductPagesByDateRange = async (client: SupabaseClient<Database>,{
     startDate,
     endDate,
 }: {
@@ -54,13 +55,13 @@ export const getProductPagesByDateRange = async ({
     return Math.ceil(count / PAGE_SIZE);
 };
 
-export const getCategories = async () => {
+export const getCategories = async (client: SupabaseClient<Database>) => {
     const {data, error} = await client.from("categories").select("category_id, name, description");
     if(error) throw new Error(error.message);
     return data;
 };
 
-export const getCategory = async (categoryId: number) => {
+export const getCategory = async (client: SupabaseClient<Database>, {categoryId}: {categoryId: number}) => {
     const {data, error} = await client
     .from("categories")
     .select("category_id, name, description")
@@ -70,7 +71,7 @@ export const getCategory = async (categoryId: number) => {
     return data;
 };
 
-export const getProductsByCategory = async ({categoryId, page}: {categoryId: number, page: number}) => {
+export const getProductsByCategory = async (client: SupabaseClient<Database>, {categoryId, page}: {categoryId: number, page: number}) => {
     const {data, error} = await client
     .from("products")
     .select(productListSelect)
@@ -80,7 +81,7 @@ export const getProductsByCategory = async ({categoryId, page}: {categoryId: num
     return data;
 };
 
-export const getCategoryPages = async (categoryId: number) => {
+export const getCategoryPages = async (client: SupabaseClient<Database>, {categoryId}: {categoryId: number}) => {
     const {count, error} = await client
     .from("products")
     .select(`product_id`, {count: "exact", head: true})
@@ -90,7 +91,7 @@ export const getCategoryPages = async (categoryId: number) => {
     return Math.ceil(count / PAGE_SIZE);
 }
 
-export const getProductsBySearch = async ({query, page}: {query: string, page: number}) => {
+export const getProductsBySearch = async (client: SupabaseClient<Database>, {query, page}: {query: string, page: number}) => {
     const {data, error} = await client
         .from("products")
         .select(productListSelect)
@@ -100,7 +101,7 @@ export const getProductsBySearch = async ({query, page}: {query: string, page: n
     return data;
 };
 
-export const getPagesBySearch = async ({query}: {query: string}) => {
+export const getPagesBySearch = async (client: SupabaseClient<Database>, {query}: {query: string}) => {
     const {count, error} = await client
         .from("products")
         .select(`product_id`, {count: "exact", head: true})
@@ -110,17 +111,17 @@ export const getPagesBySearch = async ({query}: {query: string}) => {
     return Math.ceil(count / PAGE_SIZE);
 };
 
-export const getProductById = async (productId: string) => {
+export const getProductById = async (client: SupabaseClient<Database>, productId: string) => {
     const {data, error} = await client
         .from("product_overview_view")
         .select("*")
-        .eq("product_id", productId)
+        .eq("product_id", productId as unknown as number)
         .single();
     if(error) throw new Error(error.message);
     return data;
 }
 
-export const getReviews = async (productId: string) => {
+export const getReviews = async (client: SupabaseClient<Database>, productId: string) => {
     const {data, error} = await client
         .from("reviews")
         .select(`
@@ -134,6 +135,6 @@ export const getReviews = async (productId: string) => {
                 avatar
             )
             `)
-        .eq("product_id", productId);
+        .eq("product_id", productId as unknown as number);
     return data;
 }

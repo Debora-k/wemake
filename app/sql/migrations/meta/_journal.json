@@ -120,6 +120,13 @@
       "when": 1741727129025,
       "tag": "0016_spooky_nomad",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1741741655304,
+      "tag": "0017_loose_bullseye",
+      "breakpoints": true
     }
   ]
 }

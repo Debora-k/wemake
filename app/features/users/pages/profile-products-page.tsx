@@ -1,3 +1,4 @@
+import { makeSSRClient } from "~/supa-client";
 import { getUserProducts } from "../queries";
 import type { Route } from "./+types/profile-products-page";
 import { ProductCard } from "~/features/products/components/product-card";
@@ -6,8 +7,9 @@ export const meta: Route.MetaFunction = () => {
   return [{ title: "Products| wemake" }];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const products = await getUserProducts(params.username);
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { client, headers } = makeSSRClient(request);
+  const products = await getUserProducts(client, params.username);
   return { products };
 };
 

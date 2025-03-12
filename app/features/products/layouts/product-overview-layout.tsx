@@ -5,6 +5,7 @@ import { ChevronUpIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
 import type { Route } from "./+types/product-overview-layout";
 import { getProductById } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 export function meta({ data }: Route.MetaArgs) {
   return [
@@ -15,8 +16,10 @@ export function meta({ data }: Route.MetaArgs) {
 
 export const loader = async ({
   params,
+  request,
 }: Route.LoaderArgs & { params: { productId: string } }) => {
-  const product = await getProductById(params.productId);
+  const { client, headers } = makeSSRClient(request);
+  const product = await getProductById(client, params.productId);
   return { product };
 };
 

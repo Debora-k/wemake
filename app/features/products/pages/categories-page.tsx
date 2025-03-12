@@ -2,13 +2,15 @@ import type { Route } from "./+types/categories-page";
 import { Hero } from "~/common/components/hero";
 import { CategoryCard } from "~/features/products/components/category-card";
 import { getCategories } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 export const meta: Route.MetaFunction = () => [
   { title: "Categories | Product Hunt Clone" },
   { name: "description", content: "Browse products by category" },
 ];
 
-export const loader = async () => {
-  const categories = await getCategories();
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client, headers } = makeSSRClient(request);
+  const categories = await getCategories(client);
   return { categories };
 };
 

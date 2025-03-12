@@ -5,6 +5,7 @@ import { Button } from "~/common/components/ui/button";
 import { getJobById } from "../queries";
 import { z } from "zod";
 import { DateTime } from "luxon";
+import { makeSSRClient } from "~/supa-client";
 export const meta: Route.MetaFunction = () => {
   return [
     { title: `Job Details | wemake` },
@@ -16,13 +17,14 @@ const paramsSchema = z.object({
 });
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { client, headers } = makeSSRClient(request);
   const url = new URL(request.url);
   const page = url.searchParams.get("page") || "1";
   const { data: parsedData, success } = paramsSchema.safeParse(params);
   if (!success) {
     throw new Error("Invalid job page");
   }
-  const job = await getJobById(parsedData.jobId.toString());
+  const job = await getJobById(client, { jobId: parsedData.jobId.toString() });
   return { job };
 };
 

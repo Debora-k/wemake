@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home-page";
-import { Link } from "react-router";
+import { data, Link } from "react-router";
 import { ProductCard } from "~/features/products/components/product-card";
 import { Button } from "../components/ui/button";
 import { PostCard } from "~/features/community/components/post-card";
@@ -12,6 +12,7 @@ import { getPosts } from "~/features/community/queries";
 import { getGptIdeas } from "~/features/ideas/queries";
 import { getJobs } from "~/features/jobs/queries";
 import { getTeams } from "~/features/teams/queries";
+import { makeSSRClient } from "~/supa-client";
 
 export function meta({ params }: Route.MetaArgs) {
   return [
@@ -20,24 +21,25 @@ export function meta({ params }: Route.MetaArgs) {
   ];
 }
 
-export const loader = async () => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client, headers } = makeSSRClient(request);
   const [products, posts, ideas, jobs, teams] = await Promise.all([
-    getProductsByDateRange({
+    getProductsByDateRange(client, {
       startDate: DateTime.now().startOf("day"),
       endDate: DateTime.now().endOf("day"),
       limit: 7,
     }),
-    getPosts({
+    getPosts(client, {
       limit: 7,
       sorting: "newest",
     }),
-    getGptIdeas({
+    getGptIdeas(client, {
       limit: 5,
     }),
-    getJobs({
+    getJobs(client, {
       limit: 11,
     }),
-    getTeams({
+    getTeams(client, {
       limit: 7,
     }),
   ]);

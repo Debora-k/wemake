@@ -3,9 +3,10 @@
 // import { profiles } from "../users/schema";
 // import { count, eq } from "drizzle-orm";
 
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { DateTime } from "luxon";
-import client from "~/supa-client";
 
+import type { Database } from "~/supa-client";
 
 // export const getTopics = async () => {
 //   const allTopics = await db.select({
@@ -34,13 +35,13 @@ import client from "~/supa-client";
 //     return allPosts;
 // }
 
-export const getTopics = async () => {
+export const getTopics = async (client: SupabaseClient<Database>) => {
     const {data, error} = await client.from("topics").select("name, slug");
     if(error) throw new Error(error.message);
     return data;
 };
 
-export const getPosts = async ({
+export const getPosts = async (client: SupabaseClient<Database>, {
     limit, sorting, period, keyword, topic,
 }: {
     limit: number;
@@ -49,7 +50,7 @@ export const getPosts = async ({
     keyword?: string;
     topic?: string;
 }) => {
-    const baseQuery =client.from("community_post_list_view").select(`*`).limit(limit);
+    const baseQuery = client.from("community_post_list_view").select(`*`).limit(limit);
     if(sorting === "newest") {
         baseQuery.order("created_at", {ascending: false});
     } else if(sorting === "popular") {
@@ -81,7 +82,7 @@ export const getPosts = async ({
     return data;
 };
 
-export const getPostById = async (postId: string) => {
+export const getPostById = async (client: SupabaseClient<Database>, {postId}: {postId: string}) => {
     const {data, error} = await client
     .from("community_post_detail")
     .select("*")
@@ -91,7 +92,7 @@ export const getPostById = async (postId: string) => {
     return data;
 };
 
-export const getReplies = async (postId: string) => {
+export const getReplies = async (client: SupabaseClient<Database>, {postId}: {postId: string}) => {
     const replyQuery = `
         post_reply_id,
         reply,
@@ -105,7 +106,7 @@ export const getReplies = async (postId: string) => {
     const {data, error} = await client
     .from("post_replies")
     .select(`${replyQuery}, post_replies!parent_id(${replyQuery})`)
-    .eq("post_id", postId);
+    .eq("post_id", postId as unknown as number);
 
     if(error) throw new Error(error.message);
     return data;

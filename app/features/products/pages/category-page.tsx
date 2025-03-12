@@ -8,6 +8,7 @@ import {
   getProductsByCategory,
 } from "../queries";
 import { z } from "zod";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta = ({ params }: Route.MetaArgs) => {
   return [
@@ -21,6 +22,7 @@ const paramsSchema = z.object({
 });
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { client, headers } = makeSSRClient(request);
   const url = new URL(request.url);
   const page = url.searchParams.get("page") || "1";
   const { data, success } = paramsSchema.safeParse(params);
@@ -28,12 +30,12 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
     throw new Error("Invalid category");
   }
   const [category, products, totalPages] = await Promise.all([
-    getCategory(data.category),
-    getProductsByCategory({
+    getCategory(client, { categoryId: data.category }),
+    getProductsByCategory(client, {
       categoryId: data.category,
       page: Number(page),
     }),
-    getCategoryPages(data.category),
+    getCategoryPages(client, { categoryId: data.category }),
   ]);
   return { category, products, totalPages };
 };
