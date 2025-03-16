@@ -47,11 +47,11 @@ layout("features/products/layouts/leaderboard-layout.tsx", [
             route("/join", "features/auth/pages/join-page.tsx"),
             ...prefix("otp", [
                 route("/start", "features/auth/pages/otp-start-page.tsx"),
-                route("/complete", "features/auth/pages/otp-page.tsx"),
+                route("/complete", "features/auth/pages/otp-complete-page.tsx"),
             ]),
             ...prefix("/social/:provider", [
                 route("/start", "features/auth/pages/social-start-page.tsx"),
-                route("/complete", "features/auth/pages/social-page.tsx"),
+                route("/complete", "features/auth/pages/social-complete-page.tsx"),
             ]),
         ]),
         route("/logout", "features/auth/pages/logout-page.tsx"),

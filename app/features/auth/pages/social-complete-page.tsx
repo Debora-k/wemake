@@ -1,7 +1,7 @@
-import { z } from "zod";
-import type { Route } from "./+types/social-start-page";
-import { makeSSRClient } from "~/supa-client";
 import { redirect } from "react-router";
+import type { Route } from "./+types/social-complete-page";
+import { z } from "zod";
+import { makeSSRClient } from "~/supa-client";
 
 const paramsSchema = z.object({
   provider: z.enum(["google", "github"]),
@@ -12,19 +12,12 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   if (!success) return redirect("/auth/login");
 
   const { provider } = data;
-  const redirectTo = `http://localhost:5173/auth/social/${provider}/complete`;
+  const url = new URL(request.url);
+  const code = url.searchParams.get("code");
+  if (!code) return redirect("/auth/login");
+
   const { client, headers } = makeSSRClient(request);
-  const {
-    data: { url },
-    error,
-  } = await client.auth.signInWithOAuth({
-    provider,
-    options: {
-      redirectTo,
-    },
-  });
-  if (url) return redirect(url, { headers });
-  if (error) {
-    throw error;
-  }
+  const { error } = await client.auth.exchangeCodeForSession(code);
+  if (error) throw error;
+  return redirect("/", { headers });
 };
