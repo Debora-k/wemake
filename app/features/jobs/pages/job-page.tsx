@@ -6,9 +6,9 @@ import { getJobById } from "../queries";
 import { z } from "zod";
 import { DateTime } from "luxon";
 import { makeSSRClient } from "~/supa-client";
-export const meta: Route.MetaFunction = () => {
+export const meta: Route.MetaFunction = ({ data }) => {
   return [
-    { title: `Job Details | wemake` },
+    { title: `${data.job.position} | ${data.job.company_name}` },
     { name: "description", content: "Job details" },
   ];
 };
