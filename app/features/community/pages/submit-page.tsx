@@ -7,6 +7,7 @@ import { makeSSRClient } from "~/supa-client";
 import type { Route } from "./+types/submit-page";
 import { getLoggedInUserId } from "~/features/users/queries";
 import { getTopics } from "../queries";
+import { z } from "zod";
 
 export const meta: Route.MetaFunction = () => [
   { title: "Submit Post | wemake" },
@@ -14,9 +15,30 @@ export const meta: Route.MetaFunction = () => [
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
-  const userId = await getLoggedInUserId(client);
+  await getLoggedInUserId(client);
   const topics = await getTopics(client);
   return { topics };
+};
+
+const formSchema = z.object({
+  title: z.string().min(1).max(100),
+  category: z.string().min(1).max(100),
+  content: z.string().min(1).max(1000),
+});
+
+export const action = async ({ request }: Route.ActionArgs) => {
+  const { client } = makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+  const formData = await request.formData();
+  const { success, error, data } = formSchema.safeParse(
+    Object.fromEntries(formData)
+  );
+  if (!success) {
+    return {
+      fieldErrors: error.flatten().fieldErrors,
+    };
+  }
+  const { title, category, content } = data;
 };
 
 export default function SubmitPostPage({ loaderData }: Route.ComponentProps) {
@@ -41,7 +63,7 @@ export default function SubmitPostPage({ loaderData }: Route.ComponentProps) {
           required
           placeholder="i.e. React"
           options={loaderData.topics.map((topic) => ({
-            lable: topic.name,
+            label: topic.name,
             value: topic.slug,
           }))}
         />
