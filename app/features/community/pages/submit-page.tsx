@@ -3,8 +3,23 @@ import { Form } from "react-router";
 import InputPair from "~/common/components/input-pair";
 import SelectPair from "~/common/components/select-pair";
 import { Button } from "~/common/components/ui/button";
+import { makeSSRClient } from "~/supa-client";
+import type { Route } from "./+types/submit-page";
+import { getLoggedInUserId } from "~/features/users/queries";
+import { getTopics } from "../queries";
 
-export default function SubmitPostPage() {
+export const meta: Route.MetaFunction = () => [
+  { title: "Submit Post | wemake" },
+];
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client } = makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+  const topics = await getTopics(client);
+  return { topics };
+};
+
+export default function SubmitPostPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="pace-y-20">
       <Hero
@@ -25,12 +40,10 @@ export default function SubmitPostPage() {
           description="Select the category that best fits your post"
           required
           placeholder="i.e. React"
-          options={[
-            { label: "React", value: "react" },
-            { label: "Vue", value: "vue" },
-            { label: "Angular", value: "angular" },
-            { label: "Svelte", value: "svelte" },
-          ]}
+          options={loaderData.topics.map((topic) => ({
+            lable: topic.name,
+            value: topic.slug,
+          }))}
         />
         <InputPair
           label="Content"
