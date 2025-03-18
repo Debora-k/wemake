@@ -106,7 +106,8 @@ export const getReplies = async (client: SupabaseClient<Database>, {postId}: {po
     const {data, error} = await client
     .from("post_replies")
     .select(`${replyQuery}, post_replies!parent_id(${replyQuery})`)
-    .eq("post_id", postId as unknown as number);
+    .eq("post_id", postId as unknown as number)
+    .order("created_at", {ascending: false});
 
     if(error) throw new Error(error.message);
     return data;
