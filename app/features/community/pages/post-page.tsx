@@ -38,6 +38,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
 const formSchema = z.object({
   reply: z.string().min(1),
+  topLevelId: z.coerce.number().optional(),
 });
 
 export const action = async ({ request, params }: Route.ActionArgs) => {
@@ -52,11 +53,12 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
       formErrors: error.flatten().fieldErrors,
     };
   }
-  const { reply } = data;
+  const { reply, topLevelId } = data;
   await createReply(client, {
     reply,
     postId: params.postId,
     userId,
+    topLevelId,
   });
   return {
     ok: true,
@@ -171,10 +173,12 @@ export default function PostPage({
                   <Reply
                     key={reply.post_reply_id}
                     content={reply.reply}
-                    username={reply.user?.name ?? ""}
-                    avatarUrl={reply.user?.avatar ?? null}
+                    name={reply.user.name}
+                    username={reply.user.username}
+                    avatarUrl={reply.user.avatar}
                     timestamp={reply.created_at}
                     topLevel={true}
+                    topLevelId={reply.post_reply_id}
                     replies={reply.post_replies as any}
                   />
                 ))}
