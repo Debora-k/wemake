@@ -1,7 +1,7 @@
 CREATE OR REPLACE VIEW gpt_ideas_view AS
 SELECT 
     gpt_ideas.gpt_idea_id,
-    gpt_ideas.idea,
+    CASE WHEN gpt_ideas.claimed_at IS NULL THEN gpt_ideas.idea ELSE 'ClaimedClaimedClaimedClaimedClaimedClaimedClaimedClaimed' END AS idea,
     gpt_ideas.views,
     CASE WHEN gpt_ideas.claimed_at IS NULL THEN FALSE ELSE TRUE END AS has_claimed,
     COUNT(gpt_ideas_likes.gpt_idea_id) AS likes,
