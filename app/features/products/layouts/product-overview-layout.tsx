@@ -18,7 +18,7 @@ export const loader = async ({
   params,
   request,
 }: Route.LoaderArgs & { params: { productId: string } }) => {
-  const { client, headers } = makeSSRClient(request);
+  const { client } = makeSSRClient(request);
   const product = await getProductById(client, params.productId);
   return { product };
 };

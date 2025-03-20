@@ -5,16 +5,18 @@ import {
   DialogContent,
   DialogFooter,
 } from "~/common/components/ui/dialog";
-import { Form } from "react-router";
+import { Form, useActionData } from "react-router";
 import InputPair from "~/common/components/input-pair";
 import { Button } from "~/common/components/ui/button";
 import { Label } from "~/common/components/ui/label";
 import { StarIcon } from "lucide-react";
 import { useState } from "react";
+import type { action } from "../pages/product-reviews-page";
 
 export default function CreateReviewDialog() {
   const [rating, setRating] = useState<number>(0);
   const [hoverRating, setHoverRating] = useState<number>(0);
+  const actionData = useActionData<typeof action>();
 
   return (
     <DialogContent>
@@ -26,7 +28,7 @@ export default function CreateReviewDialog() {
           Share your thoughts with other users and help them make a decision.
         </DialogDescription>
       </DialogHeader>
-      <Form className="space-y-10">
+      <Form className="space-y-10" method="post">
         <div>
           <Label className="flex flex-col gap-1">
             Rating{" "}
@@ -53,7 +55,7 @@ export default function CreateReviewDialog() {
                 <input
                   type="radio"
                   name="rating"
-                  value={rating}
+                  value={star}
                   required
                   className="opacity-0 h-px w-px absolute"
                   onChange={() => setRating(star)}
@@ -61,14 +63,25 @@ export default function CreateReviewDialog() {
               </label>
             ))}
           </div>
+          {actionData?.formErrors?.rating && (
+            <small className="text-red-500">
+              {actionData.formErrors.rating.join(", ")}
+            </small>
+          )}
         </div>
         <InputPair
           required
           textArea
+          name="review"
           label="Review"
           description="Max 1000 characters"
           placeholder="Write your review here..."
         />
+        {actionData?.formErrors?.review && (
+          <small className="text-red-500">
+            {actionData.formErrors.review.join(", ")}
+          </small>
+        )}
         <DialogFooter>
           <Button type="submit">Submit Review</Button>
         </DialogFooter>

@@ -135,6 +135,7 @@ export const getReviews = async (client: SupabaseClient<Database>, productId: st
                 avatar
             )
             `)
-        .eq("product_id", productId as unknown as number);
+        .eq("product_id", productId as unknown as number)
+        .order("created_at", {ascending: false});
     return data;
 }
