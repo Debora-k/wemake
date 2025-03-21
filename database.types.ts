@@ -874,6 +874,15 @@ export type Database = {
       }
     }
     Functions: {
+      get_dashboard_stats: {
+        Args: {
+          user_id: string
+        }
+        Returns: {
+          views: number
+          month: string
+        }[]
+      }
       track_event: {
         Args: {
           event_type: Database["public"]["Enums"]["event_type"]
