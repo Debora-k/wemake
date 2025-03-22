@@ -31,7 +31,10 @@ export const getUserById = async (client: SupabaseClient<Database>, {id}: {id: s
         profile_id,
         name,
         username,
-        avatar
+        avatar,
+        bio,
+        headline,
+        role
         `)
     .eq("profile_id", id)
     .single();
