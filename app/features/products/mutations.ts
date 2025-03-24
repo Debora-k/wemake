@@ -25,3 +25,41 @@ export const createProductReview = async (client: SupabaseClient<Database>,
         throw error;
     }
 };
+
+export const createProduct = async (client: SupabaseClient<Database>, 
+    {
+        name,
+        tagline,
+        url,
+        howItWorks,
+        description,
+        category,
+        iconUrl,
+        userId,
+    }: {
+        name: string;
+        tagline: string;
+        url: string;
+        howItWorks: string;
+        description: string;
+        category: number;
+        iconUrl: string;
+        userId: string;
+    }
+) => {
+    const { data, error } = await client.from("products").insert({
+        name,
+        tagline,
+        url,
+        description,
+        how_it_works: howItWorks,
+        category_id: category,
+        icon: iconUrl,
+        profile_id: userId,
+    }).select("product_id")
+    .single();
+    if (error) {
+        throw error;
+    }
+    return data?.product_id;
+};

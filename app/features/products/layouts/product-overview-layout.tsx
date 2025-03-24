@@ -30,7 +30,12 @@ export default function ProductOverviewLayout({
     <div className="space-y-10">
       <div className="flex justify-between">
         <div className="flex gap-10">
-          <div className="size-40 rounded-xl shadow-xl bg-primary/50"></div>
+          <div className="size-40 overflow-hidden rounded-xl shadow-xl bg-primary/50">
+            <img
+              src={loaderData.product.icon}
+              className="size-40 rounded-xl object-cover"
+            />
+          </div>
           <div>
             <h1 className="text-5xl font-bold">{loaderData.product.name}</h1>
             <p className="text-2xl font-light">
