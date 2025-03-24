@@ -44,11 +44,12 @@ export const action = async ({ request }: Route.ActionArgs) => {
     if (avatar.size <= 2097152 && avatar.type.startsWith("image/")) {
       const { data, error } = await client.storage
         .from("avatars")
-        .upload(userId, avatar, {
+        .upload(`${userId}/${Date.now()}`, avatar, {
           contentType: avatar.type,
-          upsert: true,
+          upsert: false,
         });
       if (error) {
+        console.log(error);
         return { formErrors: { avatar: ["Failed to upload avatar"] } };
       }
       const {
@@ -89,7 +90,7 @@ export default function SettingsPage({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
-  const [avatar, setAvatar] = useState<string | null>(null);
+  const [avatar, setAvatar] = useState<string | null>(loaderData.user.avatar);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const file = e.target.files[0];
