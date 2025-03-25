@@ -6,7 +6,13 @@ import {
   BreadcrumbSeparator,
 } from "~/common/components/ui/breadcrumb";
 import type { Route } from "./+types/post-page";
-import { Form, Link, useNavigation, useOutletContext } from "react-router";
+import {
+  Form,
+  Link,
+  useFetcher,
+  useNavigation,
+  useOutletContext,
+} from "react-router";
 import { Button } from "~/common/components/ui/button";
 import { ChevronUpIcon, DotIcon, LoaderCircle } from "lucide-react";
 import { Badge } from "~/common/components/ui/badge";
@@ -68,6 +74,7 @@ export default function PostPage({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
+  const fetcher = useFetcher();
   const { isLoggedIn, name, username, avatar } = useOutletContext<{
     isLoggedIn: boolean;
     name?: string;
@@ -114,10 +121,15 @@ export default function PostPage({
       <div className="grid grid-cols-6 gap-40 items-start">
         <div className="col-span-4 space-y-10">
           <div className="flex w-full items-start gap-10">
-            <Button variant="outline" className="flex flex-col h-14">
-              <ChevronUpIcon className="size-4 shrink-0" />
-              <span>{loaderData.post.upvotes}</span>
-            </Button>
+            <fetcher.Form
+              method="post"
+              action={`/community/${loaderData.post.post_id}/upvote`}
+            >
+              <Button variant="outline" className="flex flex-col h-14">
+                <ChevronUpIcon className="size-4 shrink-0" />
+                <span>{loaderData.post.upvotes}</span>
+              </Button>
+            </fetcher.Form>
             <div className="space-y-20 w-full">
               <div className="space-y-2">
                 <h2 className="text-2xl font-bold">{loaderData.post.title}</h2>
