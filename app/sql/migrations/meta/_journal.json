@@ -127,6 +127,20 @@
       "when": 1741741655304,
       "tag": "0017_loose_bullseye",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1743024837323,
+      "tag": "0018_spicy_zeigeist",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1743025117527,
+      "tag": "0019_careful_toro",
+      "breakpoints": true
     }
   ]
 }
