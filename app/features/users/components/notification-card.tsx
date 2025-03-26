@@ -12,23 +12,41 @@ import {
 } from "~/common/components/ui/card";
 import { EyeIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
+import { Link } from "react-router";
+
 interface NotificationCardProps {
   avatarUrl: string;
   avatarFallback: string;
   username: string;
-  message: string;
+  type: "follow" | "review" | "reply";
+  productName?: string;
+  postTitle?: string;
   timestamp: string;
   seen: boolean;
+  payloadId?: number;
 }
 
 export function NotificationCard({
   avatarUrl,
   avatarFallback,
   username,
-  message,
+  type,
+  productName,
+  postTitle,
   timestamp,
   seen,
+  payloadId,
 }: NotificationCardProps) {
+  const getMessage = (type: "follow" | "review" | "reply") => {
+    switch (type) {
+      case "follow":
+        return " followed you";
+      case "review":
+        return " reviewed your product: ";
+      case "reply":
+        return " replied to your post: ";
+    }
+  };
   return (
     <Card className={cn("min-w-[450px]", seen ? "" : "bg-yellow-200/50")}>
       <CardHeader className="flex flex-row gap-4 items-start">
@@ -39,7 +57,17 @@ export function NotificationCard({
         <div>
           <CardTitle className="text-lg font-bold">
             <span className="font-medium">{username}</span>
-            <span> {message}</span>
+            <span> {getMessage(type)}</span>
+            {productName && (
+              <Button variant={"ghost"} asChild className="text-lg">
+                <Link to={`/products/${payloadId}`}>{productName}</Link>
+              </Button>
+            )}
+            {postTitle && (
+              <Button variant={"ghost"} asChild className="text-lg">
+                <Link to={`/community/${payloadId}`}>{postTitle}</Link>
+              </Button>
+            )}
           </CardTitle>
           <small className="text-muted-foreground text-sm">{timestamp}</small>
         </div>
