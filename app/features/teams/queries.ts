@@ -9,8 +9,9 @@ export const getTeams = async (client: SupabaseClient<Database>,{limit}: {limit:
         roles,
         product_description,
         team_leader: profiles!inner(
-         username,
-         avatar
+        username,
+        name,
+        avatar
         )
         `).limit(limit);
     if(error) {
@@ -31,7 +32,7 @@ export const getTeamById = async (client: SupabaseClient<Database>,teamId: strin
             role
         )
         `)
-    .eq("team_id", teamId)
+    .eq("team_id", parseInt(teamId))
     .single();
     if(error) {
         throw new Error(error.message);

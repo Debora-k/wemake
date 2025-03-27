@@ -15,7 +15,7 @@ import {
 
 interface TeamCardProps {
   id: number;
-  leaderUserName: string;
+  leaderName: string;
   leaderAvatar: string | null;
   positions: string[];
   project: string;
@@ -23,7 +23,7 @@ interface TeamCardProps {
 
 export function TeamCard({
   id,
-  leaderUserName,
+  leaderName,
   leaderAvatar,
   positions,
   project,
@@ -37,9 +37,9 @@ export function TeamCard({
               variant="secondary"
               className="inline-flex shadow-sm items-center text-base"
             >
-              <span>@{leaderUserName}</span>
+              <span>@{leaderName}</span>
               <Avatar className="size-5">
-                <AvatarFallback>{leaderUserName[0]}</AvatarFallback>
+                <AvatarFallback>{leaderName[0]}</AvatarFallback>
                 {leaderAvatar ? <AvatarImage src={leaderAvatar} /> : null}
               </Avatar>
             </Badge>

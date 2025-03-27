@@ -879,6 +879,15 @@ export type Database = {
       }
     }
     Functions: {
+      get_conversation: {
+        Args: {
+          from_user_id: string
+          to_user_id: string
+        }
+        Returns: {
+          message_room_id: number
+        }[]
+      }
       get_dashboard_stats: {
         Args: {
           user_id: string
