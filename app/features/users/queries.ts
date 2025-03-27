@@ -102,7 +102,18 @@ export const getNotifications = async (client: SupabaseClient<Database>, userId:
         created_at,
         seen
         `)
-    .eq("target_id", userId);
+    .eq("target_id", userId)
+    .order("created_at", { ascending: false });
     if(error) throw new Error(error.message);
     return data;
+};
+
+export const countNotifications = async (client: SupabaseClient<Database>, userId: string) => {
+    const { count, error } = await client
+    .from("notifications")
+    .select("*", {count: "exact", head: true})
+    .eq("seen", false)
+    .eq("target_id", userId);
+    if(error) throw new Error(error.message);
+    return count ?? 0;
 };
