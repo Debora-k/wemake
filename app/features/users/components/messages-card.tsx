@@ -14,6 +14,7 @@ interface MessagesCardProps {
   name: string;
   lastMessage: string;
   id: string;
+  lastMessageSenderName: string;
 }
 
 export function MessagesCard({
@@ -21,6 +22,7 @@ export function MessagesCard({
   name,
   lastMessage,
   id,
+  lastMessageSenderName,
 }: MessagesCardProps) {
   const location = useLocation();
   return (
@@ -39,7 +41,7 @@ export function MessagesCard({
             <div className="flex flex-col">
               <span className="text-sm font-medium">{name}</span>
               <span className="text-xs text-muted-foreground">
-                {lastMessage}
+                {lastMessageSenderName}: {lastMessage}
               </span>
             </div>
           </div>
