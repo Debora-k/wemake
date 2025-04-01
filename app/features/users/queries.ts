@@ -127,3 +127,82 @@ export const getMessages = async (client: SupabaseClient<Database>, userId: stri
     if(error) throw new Error(error.message);
     return data;
 };
+
+export const getMessagesByMessageRoomId = async (
+    client: SupabaseClient<Database>, 
+    messageRoomId: string,
+    userId: string
+) => {
+    const {count, error: countError} = await client
+    .from("message_room_members")
+    .select("*", {count: "exact", head: true})
+    .eq("message_room_id", parseInt(messageRoomId))
+    .eq("profile_id", userId);
+    if(countError) throw new Error(countError.message);
+    if(count === 0) throw new Error("Chatroom not found");
+
+    const { data, error } = await client
+    .from("messages")
+    .select(`
+        *,
+        sender:profiles!sender_id!inner(name,
+        profile_id,
+        avatar)
+        `)
+    .eq("message_room_id", parseInt(messageRoomId))
+    .eq("sender_id", userId)
+    .order("created_at", {ascending: true});
+    if(error) throw new Error(error.message);
+    return data;
+};
+
+export const getMessageRoomMembers = async (
+    client: SupabaseClient<Database>, 
+    messageRoomId: string,
+    userId: string
+) => {
+    const {count, error: countError} = await client
+    .from("message_room_members")
+    .select("*", {count: "exact", head: true})
+    .eq("message_room_id", Number(messageRoomId))
+    .eq("profile_id", userId);
+
+    if(countError) throw new Error(countError.message);
+    if(count === 0) throw new Error("Chatroom not found");
+
+    const { data, error } = await client
+    .from("message_room_members")
+    .select(`
+        profile:profiles!profile_id!inner(name, avatar)
+        `)
+    .eq("message_room_id", Number(messageRoomId))
+    .neq("profile_id", userId)
+    .single();
+
+    if(error) throw new Error(error.message);
+    return data;
+};
+
+export const createMessage = async (
+    client: SupabaseClient<Database>, 
+    message: string, 
+    messageRoomId: string, 
+    userId: string
+) => {
+    const {count, error: countError} = await client
+    .from("message_room_members")
+    .select("*", {count: "exact", head: true})
+    .eq("message_room_id", Number(messageRoomId))
+    .eq("profile_id", userId);
+
+    if(countError) throw new Error(countError.message);
+    if(count === 0) throw new Error("Chatroom not found");
+    const { error } = await client
+    .from("messages")
+    .insert({
+        content: message, 
+        message_room_id: Number(messageRoomId), 
+        sender_id: userId
+    });
+    if(error) throw new Error(error.message);
+};  
