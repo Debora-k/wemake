@@ -39,7 +39,7 @@ export function TeamCard({
             >
               <span>@{leaderName}</span>
               <Avatar className="size-5">
-                <AvatarFallback>{leaderName[0]}</AvatarFallback>
+                <AvatarFallback>{leaderName.charAt(0)}</AvatarFallback>
                 {leaderAvatar ? <AvatarImage src={leaderAvatar} /> : null}
               </Avatar>
             </Badge>
