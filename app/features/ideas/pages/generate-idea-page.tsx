@@ -3,6 +3,7 @@ import { zodResponseFormat } from "openai/helpers/zod";
 import { z } from "zod";
 import { insertIdeas } from "../mutations";
 import { adminClient } from "~/supa-client";
+import type { Route } from "./+types/generate-idea-page";
 
 const openai = new OpenAI();
 
@@ -30,7 +31,20 @@ const ResponesSchema = z.object({
   ideas: z.array(IdeaSchema),
 });
 
-export const loader = async () => {
+// after added cron, changed to action from loader
+export const action = async ({ request }: Route.ActionArgs) => {
+  if (request.method !== "POST") {
+    return new Response(null, {
+      status: 404,
+    });
+  }
+  const header = request.headers.get("X-POTATO");
+  if (!header || header !== "X-TOMATO") {
+    return new Response(null, {
+      status: 404,
+    });
+  }
+
   const completion = await openai.beta.chat.completions.parse({
     model: "gpt-4o",
     messages: [
