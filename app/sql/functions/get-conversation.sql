@@ -1,8 +1,6 @@
 CREATE OR REPLACE FUNCTION get_conversation(from_user_id uuid, to_user_id uuid)
 RETURNS TABLE (message_room_id bigint) 
 LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = ''
 AS $$
 BEGIN
     RETURN QUERY SELECT m1.message_room_id

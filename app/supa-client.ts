@@ -1,7 +1,7 @@
 import { createBrowserClient, createServerClient, parseCookieHeader, serializeCookieHeader } from "@supabase/ssr";
 import type { MergeDeep, SetNonNullable, SetFieldType } from "type-fest";
 import type { Database as SupabaseDatabase } from "database.types";
-
+import { createClient } from "@supabase/supabase-js";
 
 export type Database = MergeDeep<
     SupabaseDatabase, 
@@ -65,4 +65,9 @@ export const makeSSRClient = (request: Request) => {
         headers,
     };
 };
-// export default browserClient;
+
+
+export const adminClient = createClient<Database>(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
