@@ -95,5 +95,6 @@ layout("features/products/layouts/leaderboard-layout.tsx", [
             route("/posts", "features/users/pages/profile-posts-page.tsx"),
         ]),
         route("/messages", "features/users/pages/send-message-page.tsx"),
+        route("/welcome", "features/users/pages/welcome-page.tsx"),
     ]),
 ] satisfies RouteConfig;
