@@ -4,7 +4,7 @@ import { Form } from "react-router";
 import SelectPair from "~/common/components/select-pair";
 import { Calendar } from "~/common/components/ui/calendar";
 import { Label } from "~/common/components/ui/label";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { DateRange } from "react-day-picker";
 import { DateTime } from "luxon";
 import { Button } from "~/common/components/ui/button";
@@ -12,7 +12,10 @@ import { getLoggedInUserId } from "~/features/users/queries";
 import { makeSSRClient } from "~/supa-client";
 import { z } from "zod";
 import { getProducts } from "../queries";
-import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
+import {
+  loadTossPayments,
+  type TossPaymentsWidgets,
+} from "@tosspayments/tosspayments-sdk";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -45,28 +48,45 @@ export default function PromotePage({ loaderData }: Route.ComponentProps) {
           "days"
         ).days
       : 0;
+  const widgets = useRef<TossPaymentsWidgets | null>(null);
   useEffect(() => {
     const initToss = async () => {
       const toss = await loadTossPayments(
         "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"
       );
-      const widgets = (await toss).widgets({
+      widgets.current = (await toss).widgets({
         customerKey: "111111",
       });
-      await widgets.renderPaymentMethods({
+      await widgets.current.setAmount({
+        value: 0,
+        currency: "KRW",
+      });
+      await widgets.current.renderPaymentMethods({
         selector: "#toss-payment-methods",
+      });
+      await widgets.current.renderAgreement({
+        selector: "#toss-payment-agreement",
       });
     };
     initToss();
   }, []);
+
+  useEffect(() => {
+    if (widgets.current) {
+      widgets.current.setAmount({
+        value: totalDays * 200,
+        currency: "KRW",
+      });
+    }
+  }, [totalDays]);
   return (
     <div>
       <Hero
         title="Promote Your Product"
         subtitle="Boost your product's visibility."
       />
-      <div className="grid grid-cols-6">
-        <Form className="col-span-4 max-w-sm mx-auto flex flex-col gap-10 items-center">
+      <div className="grid grid-cols-6 gap-10">
+        <Form className="col-span-3 max-w-sm mx-auto flex flex-col gap-10 items-start">
           <SelectPair
             label="Select a product"
             description="Select the product you want to promote"
@@ -92,13 +112,18 @@ export default function PromotePage({ loaderData }: Route.ComponentProps) {
               disabled={{ before: new Date() }}
             />
           </div>
-          <Button disabled={totalDays === 0}>
-            Go to Checkout (${totalDays * 20})
-          </Button>
         </Form>
-        <aside className="col-span-2">
-          <div id="toss-payment-methods" />
+        <aside className="col-span-3 px-20 flex flex-col items-center">
+          <div id="toss-payment-methods" className="w-full" />
           <div id="toss-payment-agreement" />
+          <Button className="w-full" disabled={totalDays === 0}>
+            Checkout (
+            {(totalDays * 200).toLocaleString("en-CA", {
+              style: "currency",
+              currency: "CAD",
+            })}
+            )
+          </Button>
         </aside>
       </div>
     </div>
