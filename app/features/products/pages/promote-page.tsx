@@ -4,7 +4,7 @@ import { Form } from "react-router";
 import SelectPair from "~/common/components/select-pair";
 import { Calendar } from "~/common/components/ui/calendar";
 import { Label } from "~/common/components/ui/label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { DateRange } from "react-day-picker";
 import { DateTime } from "luxon";
 import { Button } from "~/common/components/ui/button";
@@ -12,6 +12,7 @@ import { getLoggedInUserId } from "~/features/users/queries";
 import { makeSSRClient } from "~/supa-client";
 import { z } from "zod";
 import { getProducts } from "../queries";
+import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -44,6 +45,20 @@ export default function PromotePage({ loaderData }: Route.ComponentProps) {
           "days"
         ).days
       : 0;
+  useEffect(() => {
+    const initToss = async () => {
+      const toss = await loadTossPayments(
+        "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"
+      );
+      const widgets = (await toss).widgets({
+        customerKey: "111111",
+      });
+      await widgets.renderPaymentMethods({
+        selector: "#toss-payment-methods",
+      });
+    };
+    initToss();
+  }, []);
   return (
     <div>
       <Hero
@@ -81,7 +96,10 @@ export default function PromotePage({ loaderData }: Route.ComponentProps) {
             Go to Checkout (${totalDays * 20})
           </Button>
         </Form>
-        <aside className="col-span-2"></aside>
+        <aside className="col-span-2">
+          <div id="toss-payment-methods" />
+          <div id="toss-payment-agreement" />
+        </aside>
       </div>
     </div>
   );
