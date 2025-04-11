@@ -49,8 +49,11 @@ export default function PromotePage({ loaderData }: Route.ComponentProps) {
         ).days
       : 0;
   const widgets = useRef<TossPaymentsWidgets | null>(null);
+  const initedToss = useRef<boolean>(false);
   useEffect(() => {
     const initToss = async () => {
+      if (initedToss.current) return;
+      initedToss.current = true;
       const toss = await loadTossPayments(
         "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"
       );
@@ -72,22 +75,48 @@ export default function PromotePage({ loaderData }: Route.ComponentProps) {
   }, []);
 
   useEffect(() => {
-    if (widgets.current) {
-      widgets.current.setAmount({
-        value: totalDays * 200,
-        currency: "KRW",
-      });
-    }
-  }, [totalDays]);
+    const updateAmount = async () => {
+      if (widgets.current) {
+        await widgets.current.setAmount({
+          value: totalDays * 200,
+          currency: "KRW",
+        });
+      }
+    };
+    updateAmount();
+  }, [promotionDates]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    const product = formData.get("product") as string;
+    if (!product || !promotionDates?.to || !promotionDates?.from) return;
+    await widgets.current?.requestPayment({
+      orderId: crypto.randomUUID(),
+      orderName: `Wemake Promotion for ${product}`,
+      customerEmail: "debora0104k@gmail.com",
+      customerName: "Debora",
+      customerMobilePhone: "8251235678",
+      metadata: {
+        product,
+        promotionFrom: DateTime.fromJSDate(promotionDates.from).toISO(),
+        promotionTo: DateTime.fromJSDate(promotionDates.to).toISO(),
+      },
+      successUrl: `${window.location.href}/success`,
+      failUrl: `${window.location.href}/fail`,
+    });
+  };
+
   return (
     <div>
       <Hero
         title="Promote Your Product"
         subtitle="Boost your product's visibility."
       />
-      <div className="grid grid-cols-6 gap-10">
-        <Form className="col-span-3 max-w-sm mx-auto flex flex-col gap-10 items-start">
+      <form onSubmit={handleSubmit} className="grid grid-cols-6 gap-10">
+        <div className="col-span-3 max-w-sm mx-auto flex flex-col gap-10 items-start">
           <SelectPair
+            required
             label="Select a product"
             description="Select the product you want to promote"
             name="product"
@@ -112,7 +141,7 @@ export default function PromotePage({ loaderData }: Route.ComponentProps) {
               disabled={{ before: new Date() }}
             />
           </div>
-        </Form>
+        </div>
         <aside className="col-span-3 px-20 flex flex-col items-center">
           <div id="toss-payment-methods" className="w-full" />
           <div id="toss-payment-agreement" />
@@ -125,7 +154,7 @@ export default function PromotePage({ loaderData }: Route.ComponentProps) {
             )
           </Button>
         </aside>
-      </div>
+      </form>
     </div>
   );
 }
