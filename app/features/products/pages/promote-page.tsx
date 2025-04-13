@@ -90,6 +90,7 @@ export default function PromotePage({ loaderData }: Route.ComponentProps) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const product = formData.get("product") as string;
+    console.log(product);
     if (!product || !promotionDates?.to || !promotionDates?.from) return;
     await widgets.current?.requestPayment({
       orderId: crypto.randomUUID(),
@@ -122,7 +123,7 @@ export default function PromotePage({ loaderData }: Route.ComponentProps) {
             name="product"
             options={loaderData.products.map((product) => ({
               label: product.name,
-              value: product.product_id.toString(),
+              value: product.name,
             }))}
             placeholder="Select a product"
           />
