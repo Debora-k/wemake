@@ -92,9 +92,9 @@ export const todos = pgTable("todos", {
         withCheck: sql`${authUid} = ${table.profile_id}`,
     }),
     pgPolicy("todos-select-policy", {
-    for: "select",
-    to: authenticatedRole,
-    as: "permissive",
-    using: sql`${authUid} = ${table.profile_id}`,
+        for: "select",
+        to: authenticatedRole,
+        as: "permissive",
+        using: sql`${authUid} = ${table.profile_id}`,
 }),
 ]);

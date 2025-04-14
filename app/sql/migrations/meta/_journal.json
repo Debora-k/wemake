@@ -148,6 +148,13 @@
       "when": 1744609714394,
       "tag": "0020_third_nico_minoru",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1744610130701,
+      "tag": "0021_optimal_tigra",
+      "breakpoints": true
     }
   ]
 }
