@@ -9,7 +9,7 @@ import { sentryReactRouter, type SentryReactRouterBuildOptions } from '@sentry/r
  const sentryConfig: SentryReactRouterBuildOptions = {
     org: "wemake-wg",
     project: "wemake",
-    authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
+    authToken: import.meta.env?.VITE_SENTRY_AUTH_TOKEN || process.env.VITE_SENTRY_AUTH_TOKEN,
   };
 
 export default defineConfig((config) => {
