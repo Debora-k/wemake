@@ -6,14 +6,13 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { sentryReactRouter, type SentryReactRouterBuildOptions } from '@sentry/react-router';
 
 
-
-
-export default defineConfig((config) => {
-  const sentryConfig: SentryReactRouterBuildOptions = {
+ const sentryConfig: SentryReactRouterBuildOptions = {
     org: "wemake-wg",
     project: "wemake",
     authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
   };
+
+export default defineConfig((config) => {
   return {
   css: {
     postcss: {
