@@ -22,8 +22,6 @@ export function meta({ params }: Route.MetaArgs) {
 }
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  throw new Error("some error thrown in a loader");
-
   const { client, headers } = makeSSRClient(request);
   const [products, posts, ideas, jobs, teams] = await Promise.all([
     getProductsByDateRange(client, {
