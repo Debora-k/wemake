@@ -5,12 +5,13 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { sentryReactRouter, type SentryReactRouterBuildOptions } from '@sentry/react-router';
 
+const sentryConfig: SentryReactRouterBuildOptions = {
+  org: "wemake-wg",
+  project: "wemake",
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+};
+
 export default defineConfig((config) => {
-  const sentryConfig: SentryReactRouterBuildOptions = {
-    org: "wemake-wg",
-    project: "wemake",
-    authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
-  };
 
   return {
   css: {
@@ -19,6 +20,7 @@ export default defineConfig((config) => {
     },
   },
   plugins: [reactRouter(), tsconfigPaths(), sentryReactRouter(sentryConfig, config)],
+  sentryConfig,
   server: {
     allowedHosts: true,
     },
