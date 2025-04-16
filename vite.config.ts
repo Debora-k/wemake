@@ -12,7 +12,7 @@ export default defineConfig((config) => {
   const sentryConfig: SentryReactRouterBuildOptions = {
     org: "wemake-wg",
     project: "wemake",
-    authToken: process.env.SENTRY_AUTH_TOKEN
+    authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
   };
   return {
   css: {
