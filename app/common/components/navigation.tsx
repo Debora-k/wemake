@@ -35,7 +35,7 @@ const menus = [
     to: "/products",
     items: [
       {
-        name: "Leaderboards",
+        name: "Explore Best Products",
         description: "See the top performers in your community",
         to: "/products/leaderboards",
       },

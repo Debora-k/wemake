@@ -9,8 +9,8 @@ import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
   return [
-    { title: "Leaderboards | wemake" },
-    { name: "description", content: "Product leaderboards and rankings" },
+    { title: "Best Products | wemake" },
+    { name: "description", content: "Best Products on wemake" },
   ];
 };
 
@@ -46,13 +46,13 @@ export default function LeaderboardsPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-20">
       <Hero
-        title="Leaderboards"
+        title="Best Products"
         subtitle="The most popular products on wemake"
       />
       <div className="grid grid-cols-3 gap-4">
         <div>
           <h2 className="text-3xl font-bold leading-tight tracking-tight">
-            Daily Leaderboard
+            Daily Best Products
           </h2>
           <p className="text-xl font-light text-foreground">
             The most popular products on wemake today.
@@ -71,14 +71,14 @@ export default function LeaderboardsPage({ loaderData }: Route.ComponentProps) {
         ))}
         <Button variant="link" asChild className="text-lg self-center">
           <Link to="/products/leaderboards/daily">
-            Explore Leaderboard &rarr;
+            Explore Best Products &rarr;
           </Link>
         </Button>
       </div>
       <div className="grid grid-cols-3 gap-4">
         <div>
           <h2 className="text-3xl font-bold leading-tight tracking-tight">
-            Weekly Leaderboard
+            Weekly Best Products
           </h2>
           <p className="text-xl font-light text-foreground">
             The most popular products on wemake this week.
@@ -97,14 +97,14 @@ export default function LeaderboardsPage({ loaderData }: Route.ComponentProps) {
         ))}
         <Button variant="link" asChild className="text-lg self-center">
           <Link to="/products/leaderboards/weekly">
-            Explore Leaderboard &rarr;
+            Explore Best Products &rarr;
           </Link>
         </Button>
       </div>
       <div className="grid grid-cols-3 gap-4">
         <div>
           <h2 className="text-3xl font-bold leading-tight tracking-tight">
-            Monthly Leaderboard
+            Monthly Best Products
           </h2>
           <p className="text-xl font-light text-foreground">
             The most popular products on wemake this month.
@@ -123,14 +123,14 @@ export default function LeaderboardsPage({ loaderData }: Route.ComponentProps) {
         ))}
         <Button variant="link" asChild className="text-lg self-center">
           <Link to="/products/leaderboards/monthly">
-            Explore Leaderboard &rarr;
+            Explore Best Products &rarr;
           </Link>
         </Button>
       </div>
       <div className="grid grid-cols-3 gap-4">
         <div>
           <h2 className="text-3xl font-bold leading-tight tracking-tight">
-            Yearly Leaderboard
+            Yearly Best Products
           </h2>
           <p className="text-xl font-light text-foreground">
             The most popular products on wemake this year.
@@ -149,7 +149,7 @@ export default function LeaderboardsPage({ loaderData }: Route.ComponentProps) {
         ))}
         <Button variant="link" asChild className="text-lg self-center">
           <Link to="/products/leaderboards/yearly">
-            Explore Leaderboard &rarr;
+            Explore Best Products &rarr;
           </Link>
         </Button>
       </div>
