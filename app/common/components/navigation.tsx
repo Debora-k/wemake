@@ -66,14 +66,14 @@ const menus = [
     to: "/jobs",
     items: [
       {
-        name: "Remote Jobs",
-        description: "Find a remote job in our community",
-        to: "/jobs?location=remote",
-      },
-      {
         name: "Full-Time Jobs",
         description: "Find a full-time job in our community",
         to: "/jobs?type=full-time",
+      },
+      {
+        name: "Part-Time Jobs",
+        description: "Find a part-time job in our community",
+        to: "/jobs?type=part-time",
       },
       {
         name: "Freelance Jobs",

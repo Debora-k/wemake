@@ -4,7 +4,7 @@ import { SALARY_RANGES } from "./constants";
 export const getJobs = async (client: SupabaseClient<Database>, {limit, location, type, salary}: {
     limit: number, 
     location?: 'remote' | 'on-site' | 'hybrid', 
-    type?: 'full-time' | 'part-time' | 'remote', 
+    type?: 'full-time' | 'part-time' | 'remote' | 'freelance' | 'internship', 
     salary?: typeof SALARY_RANGES[number]
 }) => {
     
@@ -26,7 +26,7 @@ export const getJobs = async (client: SupabaseClient<Database>, {limit, location
         baseQuery.eq("location", location);
     }
     if(type) {
-        baseQuery.eq("job_type", type);
+        baseQuery.eq("job_type", type as "full-time" | "part-time" | "remote");
     }
     if(salary) {
         baseQuery.eq("salary_range", salary);
