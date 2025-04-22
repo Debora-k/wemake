@@ -85,7 +85,8 @@ export default function JobsPage({ loaderData }: Route.ComponentProps) {
             />
           ))}
         </div>
-        <div className="xl:col-span-2 sticky top-20 flex flex-col gap-10">
+        <hr className="h-px my-10 bg-gray-300 border-0 xl:col-span-4" />
+        <div className="xl:col-span-2 sticky top-20 flex flex-col gap-10 mt-5">
           <div className="flex flex-col items-start gap-2.5">
             <h4 className="text-sm font-bold text-muted-foreground">Type</h4>
             <div className="flex flex-wrap gap-2">
@@ -124,9 +125,9 @@ export default function JobsPage({ loaderData }: Route.ComponentProps) {
               ))}
             </div>
           </div>
-          <div className="flex flex-col items-start gap-2.5">
+          <div className="flex flex-col items-start gap-2.5 w-3/5">
             <h4 className="text-sm font-bold text-muted-foreground">Salary</h4>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-5">
               {" "}
               {SALARY_RANGES.map((range) => (
                 <Button

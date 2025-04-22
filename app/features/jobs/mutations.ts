@@ -21,7 +21,7 @@ export const createJob = async (
         company_logo: data.company_logo_url,
         company_location: data.company_location,
         apply_url: data.apply_url,
-        job_type: data.job_type as "full-time" | "part-time" | "remote",   
+        job_type: data.job_type as "full-time" | "part-time" | "freelance" | "internship",   
         location: data.location as "remote" | "on-site" | "hybrid",
         salary_range: data.salary_range,
     })  

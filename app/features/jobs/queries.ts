@@ -26,7 +26,7 @@ export const getJobs = async (client: SupabaseClient<Database>, {limit, location
         baseQuery.eq("location", location);
     }
     if(type) {
-        baseQuery.eq("job_type", type as "full-time" | "part-time" | "remote");
+        baseQuery.eq("job_type", type as "full-time" | "part-time" | "freelance" | "internship");
     }
     if(salary) {
         baseQuery.eq("salary_range", salary);

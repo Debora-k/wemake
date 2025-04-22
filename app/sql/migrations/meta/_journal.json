@@ -162,6 +162,13 @@
       "when": 1745212613482,
       "tag": "0022_last_ricochet",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1745291953747,
+      "tag": "0023_loud_micromacro",
+      "breakpoints": true
     }
   ]
 }
