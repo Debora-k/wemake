@@ -53,7 +53,7 @@ export function NotificationCard({
   const optimisticSeen = fetcher.state === "idle" ? seen : true;
 
   return (
-    <Card className={cn("min-w-[450px]", seen ? "" : "bg-yellow-200/50")}>
+    <Card className={cn("min-w-[450px]", seen ? "" : "bg-purple-200/50")}>
       <CardHeader className="flex flex-row gap-4 items-start">
         <Avatar>
           <AvatarImage src={avatarUrl} />
