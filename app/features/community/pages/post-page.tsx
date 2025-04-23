@@ -23,7 +23,7 @@ import {
   AvatarImage,
 } from "~/common/components/ui/avatar";
 import { Reply } from "../components/reply";
-import { getPostById, getReplies } from "../queries";
+import { getPostById, getReplies, getFollowing } from "../queries";
 import { DateTime } from "luxon";
 import { makeSSRClient } from "~/supa-client";
 import { getLoggedInUserId } from "~/features/users/queries";
@@ -39,7 +39,12 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const { client, headers } = makeSSRClient(request);
   const post = await getPostById(client, { postId: params.postId });
   const replies = await getReplies(client, { postId: params.postId });
-  return { post, replies };
+  const userId = await getLoggedInUserId(client);
+  const isFollowing = await getFollowing(client, {
+    userId,
+    profileId: post.author_profile_id,
+  });
+  return { post, replies, isFollowing };
 };
 
 const formSchema = z.object({
@@ -222,9 +227,23 @@ export default function PostPage({
             </span>
             <span>🚀 Lunched {loaderData.post.products_count} products</span>
           </div>
-          <Button variant="outline" className="w-full">
-            Follow
-          </Button>
+          <fetcher.Form
+            method="post"
+            action={`/community/${loaderData.post.author_profile_id}/follow`}
+          >
+            {loaderData.isFollowing ? (
+              <Button
+                variant="secondary"
+                className="w-full bg-muted-foreground/10"
+              >
+                Following
+              </Button>
+            ) : (
+              <Button variant="outline" className="w-full">
+                Follow
+              </Button>
+            )}
+          </fetcher.Form>
         </aside>
       </div>
     </div>

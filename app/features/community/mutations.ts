@@ -92,3 +92,25 @@ export const toggleUpvote = async (
         await client.from("post_upvotes").delete().eq("post_id", Number(postId)).eq("profile_id", userId);
     }
 };
+
+export const toggleFollow = async (
+    client: SupabaseClient<Database>,
+    {
+        profileId,
+        userId,
+    }: {
+        profileId: string;
+        userId: string;
+    }
+) => {
+    const {count} = await client
+    .from("follows")
+    .select("*", {count: "exact", head: true})
+    .eq("following_id", profileId)
+    .eq("follower_id", userId);
+    if(count === 0) {
+        await client.from("follows").insert({following_id: profileId, follower_id: userId});
+    } else {
+        await client.from("follows").delete().eq("following_id", profileId).eq("follower_id", userId);
+    }
+};

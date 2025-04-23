@@ -38,7 +38,9 @@ export const follows = pgTable("follows", {
     follower_id: uuid().references(() => profiles.profile_id, { onDelete: "cascade" }).notNull(),
     following_id: uuid().references(() => profiles.profile_id, { onDelete: "cascade" }).notNull(),
     created_at: timestamp().notNull().defaultNow(),
-});
+}, (table) => [
+    primaryKey({ columns: [table.follower_id, table.following_id] })
+]);
 
 export const notificationType = pgEnum("notification_type", [
     "follow", "review", "reply", "mention",

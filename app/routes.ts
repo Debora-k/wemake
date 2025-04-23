@@ -64,6 +64,7 @@ layout("features/products/layouts/leaderboard-layout.tsx", [
         route("/:postId", "features/community/pages/post-page.tsx"),
         route("/:postId/upvote", "features/community/pages/upvote-post-page.tsx"),
         route("/submit", "features/community/pages/submit-page.tsx"),
+        route("/:profileId/follow", "features/community/pages/follow-post-page.tsx"),
     ]),
     ...prefix("/teams", [
         index("features/teams/pages/teams-page.tsx"),

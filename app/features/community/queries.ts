@@ -112,3 +112,9 @@ export const getReplies = async (client: SupabaseClient<Database>, {postId}: {po
     if(error) throw new Error(error.message);
     return data;
 }
+
+export const getFollowing = async (client: SupabaseClient<Database>, {userId, profileId}: {userId: string, profileId: string}) => {
+    const {data, error} = await client.from("follows").select("*").eq("following_id", profileId).eq("follower_id", userId).maybeSingle();
+    if(error) throw new Error(error.message);
+    return data;
+}
