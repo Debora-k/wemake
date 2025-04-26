@@ -12,7 +12,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
   const userId = await getLoggedInUserId(client);
   const notifications = await getNotifications(client, userId);
-  return { notifications };
+  return { userId, notifications };
 };
 
 export default function NotificationsPage({
@@ -28,7 +28,11 @@ export default function NotificationsPage({
             id={notification.notification_id}
             avatarUrl={notification.source?.avatar || ""}
             avatarFallback={notification.source?.name?.[0] || ""}
-            username={notification.source?.name || ""}
+            username={
+              loaderData.userId === notification.source?.profile_id
+                ? "you"
+                : notification.source?.name || ""
+            }
             type={notification.type as "follow" | "review" | "reply"}
             productName={notification.product?.name || ""}
             postTitle={notification.post?.title || ""}
