@@ -143,11 +143,12 @@ export const getMessagesByMessageRoomId = async (
 
     const { data, error } = await client
     .from("messages")
-    .select(`*`)
+    .select("*")
     .eq("message_room_id", parseInt(messageRoomId))
     .eq("sender_id", userId)
     .order("created_at", {ascending: true});
     if(error) throw new Error(error.message);
+    console.log(messageRoomId);
     return data;
 };
 
@@ -170,12 +171,12 @@ export const getMessageRoomMembers = async (
     .select(`
         profile:profiles!profile_id!inner(name, avatar, profile_id)
         `)
-    .eq("message_room_id", Number(messageRoomId))
+    .eq("message_room_id", parseInt(messageRoomId))
     .neq("profile_id", userId)
     .single();
 
     if(error) throw new Error(error.message);
-    return data
+    return data;
 };
 
 export const createMessage = async (
