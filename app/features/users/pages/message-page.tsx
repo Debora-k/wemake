@@ -61,11 +61,7 @@ export default function MessagePage({
   actionData,
 }: Route.ComponentProps) {
   const [messages, setMessages] = useState(loaderData.messages);
-  const { userId, name, avatar } = useOutletContext<{
-    userId: string;
-    name: string;
-    avatar: string;
-  }>();
+  const { userId } = useOutletContext<{ userId: string }>();
   const formRef = useRef<HTMLFormElement>(null);
   useEffect(() => {
     if (actionData?.ok) {
@@ -122,12 +118,12 @@ export default function MessagePage({
             content={message.content}
             avatarUrl={
               message.sender_id === userId
-                ? avatar
+                ? ""
                 : loaderData.members?.profile?.avatar ?? ""
             }
             avatarFallback={
               message.sender_id === userId
-                ? name.charAt(0)
+                ? ""
                 : loaderData.members?.profile?.name.charAt(0) ?? ""
             }
             isCurrentUser={message.sender_id === userId}
