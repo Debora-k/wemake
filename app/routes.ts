@@ -38,6 +38,7 @@ layout("features/products/layouts/leaderboard-layout.tsx", [
         index("features/ideas/pages/ideas-page.tsx"),
         route("/:ideaId", "features/ideas/pages/idea-page.tsx"),
         route("/generate", "features/ideas/pages/generate-idea-page.tsx"),
+        route("/:ideaId/payment", "features/ideas/pages/payment-page.tsx"),
     ]),
     ...prefix("/jobs", [
         index("features/jobs/pages/jobs-page.tsx"),

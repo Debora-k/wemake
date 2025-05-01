@@ -68,7 +68,7 @@ export function IdeaCard({
               <span>{likesCount}</span>
             </Button>
             <Button asChild>
-              <Link to={`/ideas/${id}/claim`}>Claim idea now &rarr;</Link>
+              <Link to={`/ideas/${id}`}>Claim idea now &rarr;</Link>
             </Button>
           </>
         ) : (

@@ -6,7 +6,7 @@ import { getGptIdea } from "../queries";
 import { DateTime } from "luxon";
 import { makeSSRClient } from "~/supa-client";
 import { getLoggedInUserId } from "~/features/users/queries";
-import { Form, redirect } from "react-router";
+import { Form, Link, redirect } from "react-router";
 import { claimIdea } from "../mutations";
 export const meta = ({
   data: {
@@ -62,9 +62,14 @@ export default function IdeaPage({ loaderData }: Route.ComponentProps) {
           </Button>
         </div>
         {loaderData.idea.has_claimed ? null : (
-          <Form method="post">
-            <Button size="lg">Claim idea</Button>
-          </Form>
+          <Button asChild>
+            <Link to={`/ideas/${loaderData.idea.gpt_idea_id}/payment`}>
+              Claim idea &rarr;
+            </Link>
+          </Button>
+          // <Form method="post">
+          //   <Button size="lg">Claim idea</Button>
+          // </Form>
         )}
       </div>
     </div>
