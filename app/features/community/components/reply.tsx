@@ -70,7 +70,7 @@ export function Reply({
         </Avatar>
         <div className="flex flex-col gap-4 items-start w-full">
           <div className="flex items-center gap-2">
-            <Link to={`users/@${username}`}>
+            <Link to={`/users/${username}`}>
               <h4 className="font-medium">{name}</h4>
             </Link>
             <span className="text-xs text-muted-foreground">
