@@ -211,10 +211,12 @@ export default function PostPage({
                 <AvatarImage src={loaderData.post.author_avatar} />
               ) : null}
             </Avatar>
-            <div className="flex flex-col item-start">
-              <h4 className="font-medium text-lg">
-                {loaderData.post.author_name}
-              </h4>
+            <div className="flex flex-col items-start">
+              <Link to={`/users/${loaderData.post.author_username}`}>
+                <h4 className="font-medium text-lg">
+                  {loaderData.post.author_name}
+                </h4>
+              </Link>
               <Badge variant="secondary" className="capitalize">
                 {loaderData.post.author_role}
               </Badge>
