@@ -62,7 +62,8 @@ export const createReply = async (
     .insert({
         reply,
         profile_id: userId,
-        ...(topLevelId ? {parent_id: topLevelId} : {post_id: Number(postId)}),
+        post_id: Number(postId),
+        ...(topLevelId ? {parent_id: topLevelId} : {}),
     });
     if(error) {
         throw new Error(error.message);

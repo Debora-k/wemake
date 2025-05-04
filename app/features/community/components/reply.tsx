@@ -107,7 +107,7 @@ export function Reply({
               placeholder="Add a reply"
               className="w-full resize-none"
               rows={3}
-              defaultValue={`@${username}`}
+              defaultValue={`@${name}`}
             />
             <Button>Reply</Button>
           </div>

@@ -65,6 +65,7 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
     };
   }
   const { reply, topLevelId } = data;
+  console.log(reply, topLevelId, params.postId, userId);
   await createReply(client, {
     reply,
     postId: params.postId,
