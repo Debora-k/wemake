@@ -83,6 +83,7 @@ export const sendMessage = async (client: SupabaseClient<Database>, {fromUserId,
             sender_id: fromUserId,
             content,
         });
+        return data.message_room_id;
     } else {
         const {data: roomData, error: roomError} = await client
         .from("message_rooms")
