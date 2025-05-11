@@ -138,7 +138,6 @@ export const getMessagesByMessageRoomId = async (
     .select("*", {count: "exact", head: true})
     .eq("message_room_id", parseInt(messageRoomId))
     .eq("profile_id", userId);
-    console.log(messageRoomId, userId);
     if(countError) throw new Error(countError.message);
     if(count === 0) throw new Error("Chatroom not found");
 
@@ -146,10 +145,8 @@ export const getMessagesByMessageRoomId = async (
     .from("messages")
     .select("*")
     .eq("message_room_id", parseInt(messageRoomId))
-    .eq("sender_id", userId)
     .order("created_at", {ascending: true});
     if(error) throw new Error(error.message);
-    console.log(messageRoomId);
     return data;
 };
 
