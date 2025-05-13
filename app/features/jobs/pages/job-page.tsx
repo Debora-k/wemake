@@ -6,6 +6,7 @@ import { getJobById } from "../queries";
 import { z } from "zod";
 import { DateTime } from "luxon";
 import { makeSSRClient } from "~/supa-client";
+import { Link } from "react-router";
 export const meta: Route.MetaFunction = ({ data }) => {
   return [
     { title: `${data.job.position} | ${data.job.company_name}` },
@@ -112,7 +113,9 @@ export default function JobPage({ loaderData }: Route.ComponentProps) {
             <DotIcon className="size-4" />
             <span className="text-sm text-muted-foreground">views</span>
           </div>
-          <Button className="w-full">Apply Now</Button>
+          <Button className="w-full" asChild>
+            <Link to={`/jobs/${loaderData.job.job_id}/apply`}>Apply Now</Link>
+          </Button>
         </div>
       </div>
     </div>

@@ -42,7 +42,10 @@ layout("features/products/layouts/leaderboard-layout.tsx", [
     ]),
     ...prefix("/jobs", [
         index("features/jobs/pages/jobs-page.tsx"),
-        route("/:jobId", "features/jobs/pages/job-page.tsx"),
+        ...prefix("/:jobId", [
+            index("features/jobs/pages/job-page.tsx"),
+            route("/apply", "features/jobs/pages/apply-job-page.tsx"),
+        ]),
         route("/submit", "features/jobs/pages/submit-job-page.tsx"),
     ]),
     ...prefix("/auth", [
